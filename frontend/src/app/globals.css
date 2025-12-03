@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Light.woff2') format('woff2'),
+       url('/fonts/Montserrat-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Regular.woff2') format('woff2'),
+       url('/fonts/Montserrat-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Medium.woff2') format('woff2'),
+       url('/fonts/Montserrat-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-SemiBold.woff2') format('woff2'),
+       url('/fonts/Montserrat-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Bold.woff2') format('woff2'),
+       url('/fonts/Montserrat-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: 'Montserrat', sans-serif;
+  --color-accent-50: oklch(0.968 0.015 303.9);
+  --color-accent-100: oklch(0.928 0.030 303.9);
+  --color-accent-200: oklch(0.828 0.060 303.9);
+  --color-accent-300: oklch(0.728 0.120 303.9);
+  --color-accent-400: oklch(0.678 0.192 303.9);
+  --color-accent-500: oklch(0.627 0.265 303.9);
+  --color-accent-600: oklch(0.557 0.238 303.9);
+  --color-accent-700: oklch(0.487 0.212 303.9);
+  --color-accent-800: oklch(0.417 0.185 303.9);
+  --color-accent-900: oklch(0.347 0.159 303.9);
+  --color-accent-950: oklch(0.287 0.132 303.9);
+
+
+
+  --color-grey-50: #fcfcfd;
+  --color-grey-100: #f8f8fa;
+  --color-grey-200: #f4f4f6; /* фоны */
+  --color-grey-300: #e6e7ea; /* borders */ /* hover и темные фоны */
+  --color-grey-400: #d8d9de;
+  --color-grey-500: #c5c6cd;
+  --color-grey-600: #a9abb5;
+  --color-grey-700: #838693;
+  --color-grey-800: #595c6b; /* тексты */
+  --color-grey-900: #323544;
+  --color-grey-950: #1f212e;
+
+
+
+  --color-title: #0d1825;
+
+
+
+
+
+}
+
+
+/* 
+Кнопка
+rounded-md
+px-6 py-2
+shadow-lg
+
+Акцент и ховер
+text-accent-600
+hover:text-accent-700
+duration-300
+
+
+ТИТУЛ и большой контейнер
+<section className="px-4 py-16">
+    <div className="mx-auto max-w-380 px-4 text-left">
+      <h2 className="text-title mb-10 text-5xl font-bold">Услуги</h2>
+  </div>
+</section>
+
+МАЛЕНЬКИЙ КОНТЕЙНЕР
+<section className="px-4 py-16">
+    <div className="mx-auto max-w-300 px-4 text-left">
+      <h2 className="text-title mb-10 text-5xl font-bold">Услуги</h2>
+  </div>
+</section>
+
+Заголовки поменьше, услуги (заголовки блоков)
+<h3 className="text-2xl font-bold text-title">Title</h3>
+
+Выделение (акцент, наша цена) 
+<h4 className="text-title text-lg font-semibold">Title</h4>
+
+Второй вариант
+<h4 className="text-title text-xl font-bold">Title</h4>
+
+ТЕКСТ НЕДОСТУПНОГО (в блоке пусто)
+<p className="text-grey-800 text-xl">Услуги временно недоступны</p>
+
+ТЕКСТ ПОБОЛЬШЕ (описания блоков)
+<p className="text-lg text-grey-800"></p>
+
+ТЕКСТЫ ОБЫЧНЫЕ (16px)
+<p className="text-gray-800"></p>
+
+ТЕКСТЫ МАЛЕНЬКИЕ НЕЗНАЧИТЕЛЬНЫЕ (рынок, фильтры)
+<span className="text-sm text-grey-700">Рынок:</span>
+
+*/

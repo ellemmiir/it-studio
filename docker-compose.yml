@@ -37,7 +37,16 @@ services:
     networks:
       - it_studio_network
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis123}", "--raw", "incr", "ping"]
+      test:
+        [
+          "CMD",
+          "redis-cli",
+          "-a",
+          "${REDIS_PASSWORD:-redis123}",
+          "--raw",
+          "incr",
+          "ping",
+        ]
       interval: 10s
       timeout: 3s
       retries: 5
@@ -90,22 +99,22 @@ services:
       # Application
       NODE_ENV: ${NODE_ENV:-production}
       PORT: 3001
-      
+
       # MongoDB
       MONGODB_URI: mongodb://admin:${MONGO_PASSWORD:-password123}@mongodb:27017/it_studio?authSource=admin
-      
+
       # Redis
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD:-redis123}
       REDIS_URL: redis://:${REDIS_PASSWORD:-redis123}@redis:6379
-      
+
       # JWT
       JWT_SECRET: ${JWT_SECRET:-change-in-production-2025}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-refresh-in-production-2025}
       JWT_EXPIRATION: ${JWT_EXPIRATION:-1h}
       JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-7d}
-      
+
       # MinIO
       MINIO_ENDPOINT: minio
       MINIO_PORT: 9000
@@ -113,7 +122,7 @@ services:
       MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin123}
       MINIO_BUCKET: it-studio-files
       MINIO_USE_SSL: "false"
-      
+
       # Email
       SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
       SMTP_PORT: ${SMTP_PORT:-587}
@@ -121,10 +130,10 @@ services:
       SMTP_USER: ${SMTP_USER:-}
       SMTP_PASS: ${SMTP_PASS:-}
       SMTP_FROM: ${SMTP_FROM:-noreply@itstudio.ru}
-      
+
       # CORS
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
-      
+
       # Rate Limiting
       RATE_LIMIT_TTL: ${RATE_LIMIT_TTL:-60}
       RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-100}
@@ -144,12 +153,12 @@ services:
         condition: service_healthy
     networks:
       - it_studio_network
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/v1/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
+    # healthcheck:
+    #   test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/v1/health"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 60s
 
   frontend:
     build:
@@ -170,18 +179,18 @@ services:
       - frontend_node_modules:/app/node_modules
       - frontend_next:/app/.next
     working_dir: /app
-    depends_on:
-      backend:
-        condition: service_healthy
+    # depends_on:
+    #   backend:
+    #     condition: service_healthy
     networks:
       - it_studio_network
     command: npm run dev
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 90s
+    # healthcheck:
+    #   test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 90s
 
 networks:
   it_studio_network:
