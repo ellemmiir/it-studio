@@ -17,7 +17,7 @@ export const ProjectDetailed = ({ project }: Props) => {
           </Link>
           <span className="mx-2 text-gray-400">/</span>
           <Link
-            href="/portfolio"
+            href="/services"
             className="text-purple-600 hover:text-purple-800"
           >
             Projects
