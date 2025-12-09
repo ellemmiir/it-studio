@@ -1,0 +1,163 @@
+.section {
+  background-color: var(--color-grey-200);
+  overflow: hidden;
+  padding: 4rem 1rem;
+}
+
+.container {
+  max-width: 380px;
+  margin: 0 auto;
+  padding: 4rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  position: relative;
+  margin-bottom: 7.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 3rem; 
+  font-weight: bold;
+  color: var(--color-title);
+  margin-bottom: 2.5rem; 
+}
+
+.pendulumContainer {
+  position: relative;
+  width: 80px;
+  height: 300px;
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 200px;
+  transform-origin: top center;
+}
+
+.ball {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+@keyframes leftBall {
+  0% {
+    transform: translateX(-50%) translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(-50%) translateX(-55px) translateY(-12px);
+  }
+  50% {
+    transform: translateX(-50%) translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(-50%) translateX(0) translateY(0);
+  }
+}
+
+@keyframes leftLine {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(15deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes rightBall {
+  0% {
+    transform: translateX(-50%) translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateX(0) translateY(0);
+  }
+  75% {
+    transform: translateX(-50%) translateX(55px) translateY(-12px);
+  }
+  100% {
+    transform: translateX(-50%) translateX(0) translateY(0);
+  }
+}
+
+@keyframes rightLine {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-15deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.ballLeft {
+  animation: leftBall 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.lineLeft {
+  animation: leftLine 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.ballRight {
+  animation: rightBall 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.lineRight {
+  animation: rightLine 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2.5rem; 
+  text-align: center;
+}
+
+.stepTitle {
+  font-size: 1.25rem; 
+  font-weight: bold;
+  color: var(--color-title);
+  margin-bottom: 0.75rem; 
+}
+
+.stepDescription {
+  color: var(--color-grey-800);
+}
+
+.pendulumWrapper {
+  position: absolute;
+  top: -5rem; 
+  right: 0;
+  margin-right: 5rem; 
+  display: flex;
+  height: 200px;
+  align-items: flex-end;
+  gap: 2rem; 
+}

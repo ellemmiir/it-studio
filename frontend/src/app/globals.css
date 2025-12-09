@@ -8,6 +8,20 @@
 }
 
 
+@keyframes blink {
+  from {
+    border-right-color: black;
+  }
+  to {
+    border-right-color: transparent;
+  }
+}
+
+.animate-blink {
+  animation: blink 800ms steps(44) infinite normal;
+}
+
+
 @font-face {
   font-family: 'Montserrat';
   src: url('/fonts/Montserrat-Light.woff2') format('woff2'),
@@ -55,6 +69,7 @@
   font-display: swap;
 }
 
+
 @theme {
   --font-sans: 'Montserrat', sans-serif;
   --color-accent-50: oklch(0.968 0.015 303.9);
@@ -63,7 +78,7 @@
   --color-accent-300: oklch(0.728 0.120 303.9);
   --color-accent-400: oklch(0.678 0.192 303.9);
   --color-accent-500: oklch(0.627 0.265 303.9);
-  --color-accent-600: oklch(0.557 0.238 303.9);
+  --color-accent-600: oklch(0.557 0.238 303.9); /* акцент */
   --color-accent-700: oklch(0.487 0.212 303.9);
   --color-accent-800: oklch(0.417 0.185 303.9);
   --color-accent-900: oklch(0.347 0.159 303.9);
@@ -72,13 +87,13 @@
 
 
   --color-grey-50: #fcfcfd;
-  --color-grey-100: #f8f8fa;
-  --color-grey-200: #f4f4f6; /* фоны */
-  --color-grey-300: #e6e7ea; /* borders */ /* hover и темные фоны */
-  --color-grey-400: #d8d9de;
-  --color-grey-500: #c5c6cd;
-  --color-grey-600: #a9abb5;
-  --color-grey-700: #838693;
+  --color-grey-100: #f8f8fa; /* текст футера ховер*/
+  --color-grey-200: #f4f4f6; /* фоны */ /* бордер футера */ 
+  --color-grey-300: #e6e7ea; /* borders */ /* hover и темные фоны */ 
+  --color-grey-400: #d8d9de; /* текст футера ярче*/
+  --color-grey-500: #c5c6cd; 
+  --color-grey-600: #a9abb5; /* текст футера */
+  --color-grey-700: #838693; 
   --color-grey-800: #595c6b; /* тексты */
   --color-grey-900: #323544;
   --color-grey-950: #1f212e;
@@ -87,10 +102,153 @@
 
   --color-title: #0d1825;
 
+}
+
+.accent, .dumping{
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.accent::before, .dumping::before  {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(8px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: accent-glowing 25s linear infinite;
+  opacity: 0.8;
+  border-radius: 0.375rem; /* rounded-md */
+  transition:
+    opacity 0.5s ease,
+    filter 0.5s ease;
+}
+
+.accent:after{
+      content: "";
+    background-color: inherit;
+    position: absolute;
+    width: 101%;
+    border-radius: 0.375rem; /* rounded-md */
+    z-index: -1;
+    height: 110%;
+}
+
+/* Анимация */
+@keyframes accent-glowing {
+  0% {
+    background-position: 0% 50%;
+    filter: blur(8px);
+  }
+  50% {
+    background-position: 300% 50%;
+    filter: blur(10px);
+  }
+  100% {
+    background-position: 0% 50%;
+    filter: blur(8px);
+  }
+}
 
 
+.accent-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-weight: 500;
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  border-radius: 0.375rem; /* rounded-md */
+  color: white;
+  background-color: black;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.accent-btn:hover {
+  border-color: transparent;
+  background-color: transparent;
+  color: black;
+}
+
+.accent-btn:focus-visible { 
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 
+    0 0 0 2px white, /* ring-offset-background */
+     0 0 0 4px rgba(0, 0, 0, 0.5); /* ring-ring */
+ }
+
+.accent-btn:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
 
 
+.btn {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500; /* font-medium */
+  color: white;
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  border-radius: 0.375rem; /* rounded-md */
+  border: 2px solid transparent;
+  background-color: black;
+  cursor: pointer;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.btn:hover {
+  border-color: black;
+  background-color: transparent;
+  color: black;
+}
+
+.btn:focus-visible {
+ box-shadow: 
+    0 0 0 2px #fff, /* ring offset */
+    0 0 0 4px rgb(44, 44, 44); 
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 
@@ -136,9 +294,9 @@ duration-300
 <p className="text-lg text-grey-800"></p>
 
 ТЕКСТЫ ОБЫЧНЫЕ (16px)
-<p className="text-gray-800"></p>
+<p className="text-grey-800"></p>
 
 ТЕКСТЫ МАЛЕНЬКИЕ НЕЗНАЧИТЕЛЬНЫЕ (рынок, фильтры)
-<span className="text-sm text-grey-700">Рынок:</span>
+<span className="text-sm text-grey-700 font-medium">Рынок:</span>
 
 */

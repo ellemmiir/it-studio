@@ -9,43 +9,47 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-neutral-900 text-white">
       <div className="mx-auto max-w-380 px-4 py-16">
         {/* Верхняя часть футера */}
-        <div className="mb-12 grid grid-cols-1 gap-12 md:grid-cols-4">
+        <div className="mb-12 grid grid-cols-1 gap-12 md:grid-cols-13">
           {/* Блок 1: Логотип и контакты */}
-          <div>
+          <div className="md:col-span-3">
             <Link href="/" className="mb-6 inline-block">
               <span className="text-2xl font-bold text-white">IT Studio</span>
             </Link>
 
             <div className="space-y-4">
               <div>
-                <p className="text-sm font-medium text-gray-400">Телефон</p>
+                <p className="text-grey-600 text-sm font-medium">Телефон</p>
                 <a
-                  href="tel:+78001234567"
-                  className="hover:text-accent-400 text-lg font-semibold transition-colors"
+                  href="tel:+79001234567"
+                  aria-label="Позвонить по номеру +7 (900) 123-45-67"
+                  rel="noopener noreferrer"
+                  className="hover:text-accent-600 text-lg font-semibold transition-colors"
                 >
-                  +7 (800) 123-45-67
+                  +7 (900) 123-45-67
                 </a>
               </div>
 
               <div>
-                <p className="text-sm font-medium text-gray-400">Email</p>
+                <p className="text-grey-600 text-sm font-medium">Email</p>
                 <a
-                  href="mailto:info@itstudio.ru"
+                  href="mailto:example@itstudio.ru"
+                  aria-label="Написать письмо на example@itstudio.ru"
                   className="hover:text-accent-400 text-lg font-semibold transition-colors"
                 >
-                  info@itstudio.ru
+                  example@itstudio.ru
                 </a>
               </div>
 
               <div>
-                <p className="text-sm font-medium text-gray-400">Телеграм</p>
+                <p className="text-grey-600 text-sm font-medium">Телеграм</p>
                 <a
                   href="https://t.me/itstudio_official"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Написать в телеграм @itstudio_official"
                   className="hover:text-accent-400 text-lg font-semibold transition-colors"
                 >
                   @itstudio_official
@@ -55,13 +59,13 @@ export default function Footer() {
           </div>
 
           {/* Блок 2: Навигация по сайту */}
-          <div>
+          <div className="md:col-span-3">
             <h3 className="mb-6 text-xl font-bold">Навигация</h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/about"
-                  className="text-gray-300 transition-colors hover:text-white"
+                  className="text-grey-400 hover:text-grey-100 transition-colors"
                 >
                   О нас
                 </Link>
@@ -69,7 +73,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/projects"
-                  className="text-gray-300 transition-colors hover:text-white"
+                  className="text-grey-400 hover:text-grey-100 transition-colors"
                 >
                   Проекты
                 </Link>
@@ -77,15 +81,15 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="text-gray-300 transition-colors hover:text-white"
+                  className="text-grey-400 hover:text-grey-100 transition-colors"
                 >
                   Блог
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/contact"
-                  className="text-gray-300 transition-colors hover:text-white"
+                  href="/contacts"
+                  className="text-grey-400 hover:text-grey-100 transition-colors"
                 >
                   Контакты
                 </Link>
@@ -94,11 +98,11 @@ export default function Footer() {
           </div>
 
           {/* Блок 3: Услуги */}
-          <div>
+          <div className="md:col-span-4">
             <h3 className="mb-6 text-xl font-bold">Услуги</h3>
             {isLoading ? (
               <div className="space-y-3">
-                {[1, 2, 3, 4].map((i) => (
+                {[1, 2, 3, 4, 5].map((i) => (
                   <div
                     key={i}
                     className="h-4 w-3/4 animate-pulse rounded bg-gray-700"
@@ -108,11 +112,11 @@ export default function Footer() {
             ) : services && services.length > 0 ? (
               <ul className="space-y-3">
                 {services.slice(0, 8).map((service) => (
-                  <li key={service._id}>
-                    <Link
-                      href={`/services/${service.slug}`}
-                      className="text-gray-300 transition-colors hover:text-white"
-                    >
+                  <li
+                    key={service._id}
+                    className="text-grey-400 hover:text-grey-100 transition-colors"
+                  >
+                    <Link href={`/services/${service.slug}`}>
                       {service.title}
                     </Link>
                   </li>
@@ -124,76 +128,51 @@ export default function Footer() {
           </div>
 
           {/* Блок 4: Юридическая информация */}
-          <div>
+          <div className="md:col-span-3">
             <h3 className="mb-6 text-xl font-bold">Юридическая информация</h3>
             <div className="space-y-4">
               <div>
-                <p className="text-sm font-medium text-gray-400">Адрес</p>
-                <p className="text-gray-300">
-                  123456, г. Москва,
-                  <br />
-                  ул. Примерная, д. 1
+                <p className="text-grey-600 text-sm font-medium">Адрес</p>
+                <p className="text-grey-400">
+                  123456, г. Москва, ул. Примерная, д. 1
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm font-medium text-gray-400">ИНН</p>
-                  <p className="text-gray-300">1234567890</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-400">ОГРН</p>
-                  <p className="text-gray-300">1234567890123</p>
-                </div>
+              <div>
+                <p className="text-grey-600 text-sm font-medium">ИНН</p>
+                <p className="text-grey-400">1234567890</p>
+              </div>
+              <div>
+                <p className="text-grey-600 text-sm font-medium">ОГРН</p>
+                <p className="text-grey-400">1234567890123</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Разделительная линия */}
-        <div className="my-8 border-t border-gray-800" />
+        <div className="border-grey-800 my-8 border-t" />
 
         {/* Нижняя часть футера */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex justify-between">
           {/* Правовые документы */}
           <div>
             <h4 className="mb-4 text-sm font-semibold tracking-wider text-gray-400 uppercase">
               Правовые документы
             </h4>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
               <Link
                 href="/privacy-policy"
-                className="text-sm text-gray-300 transition-colors hover:text-white"
+                className="mb-1 text-sm text-gray-300 transition-colors hover:text-white"
               >
                 Политика конфиденциальности
               </Link>
               <Link
-                href="/terms-of-service"
-                className="text-sm text-gray-300 transition-colors hover:text-white"
-              >
-                Пользовательское соглашение
-              </Link>
-              <Link
                 href="/personal-data"
-                className="text-sm text-gray-300 transition-colors hover:text-white"
+                className="mb-1 text-sm text-gray-300 transition-colors hover:text-white"
               >
                 Согласие на обработку персональных данных
               </Link>
-              <Link
-                href="/cookie-policy"
-                className="text-sm text-gray-300 transition-colors hover:text-white"
-              >
-                Политика использования cookies
-              </Link>
             </div>
-          </div>
-
-          {/* Кнопка обратной связи */}
-          <div className="lg:text-center">
-            <button className="ring-offset-background focus-visible:ring-ring mb-4 inline-flex h-12 cursor-pointer items-center justify-center rounded-md bg-white px-8 py-3 text-sm font-medium text-gray-900 transition-all hover:bg-gray-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50">
-              Оставить заявку
-            </button>
-            <p className="text-xs text-gray-500">Ответим в течение 15 минут</p>
           </div>
 
           {/* Социальные сети */}
@@ -237,14 +216,10 @@ export default function Footer() {
         </div>
 
         {/* Копирайт */}
-        <div className="mt-12 border-t border-gray-800 pt-8">
-          <div className="flex flex-col items-center justify-between md:flex-row">
+        <div className="border-grey-800 mt-12 border-t pt-8">
+          <div className="text-center md:flex-row">
             <p className="text-sm text-gray-400">
               © {currentYear} IT Studio. Все права защищены.
-            </p>
-            <p className="mt-4 text-xs text-gray-500 md:mt-0">
-              Использование материалов сайта разрешено только с согласия
-              правообладателя
             </p>
           </div>
         </div>

@@ -10,17 +10,46 @@ interface Props {
 
 const BlogPostPage: React.FC<Props> = ({ post }) => {
   return (
-    <div className="min-h-screen bg-white">
+    <article className="mx-auto max-w-380 px-4">
       {/* Hero секция */}
-      <div className="relative bg-gray-900">
-        <div className="absolute inset-0">
+
+      {/* <div className="absolute inset-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-20"
             style={{ backgroundImage: `url(${post.imageUrl})` }}
           />
-        </div>
+        </div> */}
 
-        <div className="relative mx-auto max-w-4xl px-4 py-24">
+      <div className="pt-40 pb-20">
+        <h1 className="text-title mb-10 text-7xl font-semibold">
+          {post.title}
+        </h1>
+        <div className="max-w-4xl">
+          <p className="text-grey-800 mb-5 text-lg">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
+            quos reprehenderit quibusdam. Cupiditate id culpa distinctio
+            aliquam. Quia placeat deleniti ad voluptates incidunt dignissimos
+            eos nesciunt, accusamus odio? Omnis, iure!
+          </p>
+        </div>
+        <div>
+          <div className="flex items-baseline text-gray-300">
+            <span className="mb-6 inline-block rounded-full bg-black px-4 py-2 text-sm font-medium text-white backdrop-blur-sm">
+              {post.category}
+            </span>
+            <span className="mx-3">•</span>
+            <span>{post.author}</span>
+            <span className="mx-3">•</span>
+            <span>{post.readTime}</span>
+            <span className="mx-3">•</span>
+            <span>
+              {new Date(post.publishedAt).toLocaleDateString("ru-RU")}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="relative mx-auto max-w-4xl px-4 py-24">
           <div className="text-center">
             <span className="mb-6 inline-block rounded-full bg-white/20 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm">
               {post.category}
@@ -38,9 +67,7 @@ const BlogPostPage: React.FC<Props> = ({ post }) => {
               </span>
             </div>
           </div>
-        </div>
-      </div>
-
+        </div> */}
       {/* Контент */}
       <article className="mx-auto max-w-3xl px-4 py-12">
         <div className="prose prose-lg max-w-none">
@@ -115,7 +142,7 @@ const BlogPostPage: React.FC<Props> = ({ post }) => {
           </div>
         </div>
       </article>
-    </div>
+    </article>
   );
 };
 

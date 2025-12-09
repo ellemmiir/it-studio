@@ -196,7 +196,7 @@
 
 import { Service } from "@/features/services/model/types";
 import { BaseServiceTemplate } from "../../templates/BaseServiceTemplate";
-import Calculator from "@/components/layout/Calculator/Calculator";
+import CalculatorInfrustructure from "@/components/layout/Calculator/Calculator-Infrustructure";
 import Calculator2 from "@/components/layout/Calculator/Calculator2";
 
 export const ItInfrastructureService = ({ service }: { service: Service }) => {
@@ -204,23 +204,21 @@ export const ItInfrastructureService = ({ service }: { service: Service }) => {
     <BaseServiceTemplate
       service={service}
       additionalComponents={{
-        beforeContent: (
+        calculator: (
           <>
-            <div className="mb-8 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 p-6 shadow-sm">
+            <div className="bg-grey-200 mb-8 rounded-xl p-6 shadow-sm">
               <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
                 <div>
                   <h2 className="mb-2 text-2xl font-bold text-gray-900">
-                    Развитие ИТ-инфраструктуры
+                    Рассчитайте стоимость онлайн
                   </h2>
                   <p className="max-w-2xl text-gray-700">
-                    Комплексное обслуживание и развитие ИТ-инфраструктуры для
-                    обеспечения стабильной работы бизнес-процессов и цифровой
-                    трансформации компании.
+                    Узнайте точную цену услуги за 2 минуты с помощью нашего
+                    калькулятора
                   </p>
                 </div>
                 <div className="shrink-0">
-                  <Calculator />
-                  <Calculator2 />
+                  <CalculatorInfrustructure />
                 </div>
               </div>
             </div>

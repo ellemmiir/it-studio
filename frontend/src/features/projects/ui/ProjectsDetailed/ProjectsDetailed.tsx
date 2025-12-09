@@ -1,4 +1,3 @@
-// frontend/src/features/portfolio/ui/ProjectDetailed/ProjectDetailed.tsx
 import Link from "next/link";
 import { Project } from "../../model/types";
 

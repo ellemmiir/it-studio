@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, ArrowLeft } from "lucide-react";
+import { Service } from "@/features/services/model/types";
+import { getActiveServices } from "@/features/services/model/api";
 
 type SiteType =
   | "landing"
@@ -22,22 +24,16 @@ interface CalculatorState {
   functionality: Functionality | null;
   needsResponsive: Availability | null;
   urgency: Urgency | null;
-  hasPromotion: boolean;
-  promotionDiscount: number;
 }
 
-// Функция округления до сотен
-const roundToHundreds = (num: number): number => {
-  return Math.round(num / 100) * 100;
-};
+interface SiteTypeConfig {
+  value: SiteType;
+  label: string;
+  desc: string;
+  slug: string;
+}
 
-// Функция форматирования числа с пробелами и округлением
-const formatPrice = (num: number): string => {
-  const rounded = roundToHundreds(num);
-  return rounded.toLocaleString("ru-RU");
-};
-
-const Calculator = () => {
+const CalculatorInfrustructure = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState<CalculatorState>({
     step: 1,
@@ -48,11 +44,49 @@ const Calculator = () => {
     functionality: null,
     needsResponsive: null,
     urgency: null,
-    hasPromotion: false,
-    promotionDiscount: 10,
   });
 
-  // Функция валидации шага
+  // Состояние для услуг из бэкенда
+  const [services, setServices] = useState<Service[]>([]);
+  const [currentService, setCurrentService] = useState<Service | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Загрузка услуг при открытии калькулятора
+  useEffect(() => {
+    if (isOpen) {
+      loadServices();
+    }
+  }, [isOpen]);
+
+  // Определение текущей услуги при изменении типа сайта
+  useEffect(() => {
+    if (state.siteType && services.length > 0) {
+      const siteTypeConfigs: Record<SiteType, string> = {
+        landing: "landing-page",
+        "visiting-card": "visiting-card",
+        corporate: "corporate-website",
+        ecommerce: "ecommerce",
+        multiple: "multiple-websites",
+      };
+
+      const slug = siteTypeConfigs[state.siteType];
+      const service = services.find((s) => s.slug === slug);
+      setCurrentService(service || null);
+    }
+  }, [state.siteType, services]);
+
+  const loadServices = async () => {
+    try {
+      setIsLoading(true);
+      const activeServices = await getActiveServices();
+      setServices(activeServices);
+    } catch (error) {
+      console.error("Ошибка при загрузке услуг:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const validateStep = (step: number): boolean => {
     switch (step) {
       case 1:
@@ -68,13 +102,28 @@ const Calculator = () => {
     }
   };
 
-  // Функции расчета
+  // Проверка, активен ли демпинг для текущей услуги
+  const isDumpingActive = (): boolean => {
+    if (!currentService || !currentService.priceDump) return false;
+
+    const now = new Date();
+    const activeUntil = new Date(currentService.priceDump.activeUntil);
+    return now <= activeUntil;
+  };
+
   const calculatePrice = () => {
-    if (!state.siteType) return { min: 0, max: 0, base: 0 };
+    if (!state.siteType)
+      return {
+        min: 0,
+        max: 0,
+        base: 0,
+        discount: 0,
+        hasDiscount: false,
+        baseWithoutDiscount: 0,
+      };
 
     let basePrice = 0;
 
-    // Базовая цена по типу
     switch (state.siteType) {
       case "landing":
         basePrice = 55000;
@@ -111,22 +160,43 @@ const Calculator = () => {
     if (state.functionality === "advanced") multiplier *= 1.4;
     if (state.needsResponsive === "no") multiplier *= 0.85;
     if (state.urgency === "urgent") multiplier *= 1.3;
-    if (state.hasPromotion) multiplier *= 1 - state.promotionDiscount / 100;
 
     const finalPrice = basePrice * multiplier;
 
-    // Диапазон ±15% с округлением до сотен
+    // Диапазон ±15%
     const minPrice = finalPrice * 0.85;
     const maxPrice = finalPrice * 1.15;
-    const basePriceRounded = finalPrice;
+
+    // Проверяем, активен ли демпинг
+    const hasDiscount = isDumpingActive();
+    const DISCOUNT_PERCENTAGE = 15; // Фиксированная скидка 15%
+
+    // Применяем скидку, если демпинг активен
+    const finalMinPrice = hasDiscount
+      ? minPrice * (1 - DISCOUNT_PERCENTAGE / 100)
+      : minPrice;
+    const finalMaxPrice = hasDiscount
+      ? maxPrice * (1 - DISCOUNT_PERCENTAGE / 100)
+      : maxPrice;
+    const finalBasePrice = hasDiscount
+      ? finalPrice * (1 - DISCOUNT_PERCENTAGE / 100)
+      : finalPrice;
+
+    const roundToThousands = (num: number): number => {
+      return Math.round(num / 1000) * 1000;
+    };
 
     return {
-      min: roundToHundreds(minPrice),
-      max: roundToHundreds(maxPrice),
-      base: roundToHundreds(basePriceRounded),
-      minRaw: minPrice,
-      maxRaw: maxPrice,
-      baseRaw: basePriceRounded,
+      min: roundToThousands(finalMinPrice),
+      max: roundToThousands(finalMaxPrice),
+      base: roundToThousands(finalBasePrice),
+      discount: hasDiscount ? DISCOUNT_PERCENTAGE : 0,
+      hasDiscount,
+      discountActiveUntil: currentService?.priceDump?.activeUntil,
+      minRaw: finalMinPrice,
+      maxRaw: finalMaxPrice,
+      baseRaw: finalBasePrice,
+      baseWithoutDiscount: roundToThousands(finalPrice),
     };
   };
 
@@ -146,31 +216,31 @@ const Calculator = () => {
             <h3 className="text-xl font-semibold">Выберите тип сайта</h3>
             {[
               {
-                value: "landing",
+                value: "landing" as SiteType,
                 label: "Лендинг",
                 desc: "Одностраничный сайт для продажи продукта/услуги",
                 price: "30-80 тыс. ₽",
               },
               {
-                value: "visiting-card",
+                value: "visiting-card" as SiteType,
                 label: "Сайт-визитка",
                 desc: "Небольшой сайт на 3-5 страниц",
                 price: "60-150 тыс. ₽",
               },
               {
-                value: "corporate",
+                value: "corporate" as SiteType,
                 label: "Корпоративный сайт",
                 desc: "Многостраничный сайт для компании",
                 price: "120-400 тыс. ₽",
               },
               {
-                value: "ecommerce",
+                value: "ecommerce" as SiteType,
                 label: "Интернет-магазин",
                 desc: "Полноценный магазин с корзиной и оплатой",
                 price: "200-800 тыс. ₽",
               },
               {
-                value: "multiple",
+                value: "multiple" as SiteType,
                 label: "Несколько сайтов",
                 desc: "Пакет сайтов или сложный проект",
                 price: "Индивидуально",
@@ -179,8 +249,7 @@ const Calculator = () => {
               <button
                 key={option.value}
                 onClick={() => {
-                  setState({ ...state, siteType: option.value as SiteType });
-                  setTimeout(() => setState((s) => ({ ...s, step: 2 })), 300);
+                  setState({ ...state, siteType: option.value });
                 }}
                 className={`w-full rounded-lg border-2 p-4 text-left transition-all ${
                   state.siteType === option.value
@@ -414,135 +483,137 @@ const Calculator = () => {
                 </p>
               )}
             </div>
-
-            <div>
-              <div className="mb-2 flex items-center justify-between">
-                <h4 className="font-medium">Есть промокод или акция?</h4>
-                <button
-                  onClick={() =>
-                    setState({ ...state, hasPromotion: !state.hasPromotion })
-                  }
-                  className={`rounded-full px-4 py-1 text-sm ${
-                    state.hasPromotion
-                      ? "bg-green-100 text-green-800"
-                      : "bg-gray-100 text-gray-800"
-                  }`}
-                >
-                  {state.hasPromotion ? "Да" : "Нет"}
-                </button>
-              </div>
-
-              {state.hasPromotion && (
-                <div className="mt-4">
-                  <label className="mb-1 block text-sm font-medium">
-                    Размер скидки (%)
-                  </label>
-                  <div className="flex items-center gap-4">
-                    <input
-                      type="range"
-                      min="5"
-                      max="20"
-                      step="5"
-                      value={state.promotionDiscount}
-                      onChange={(e) =>
-                        setState({
-                          ...state,
-                          promotionDiscount: parseInt(e.target.value),
-                        })
-                      }
-                      className="h-2 flex-1 cursor-pointer appearance-none rounded-lg bg-gray-200"
-                    />
-                    <span className="w-12 font-semibold text-purple-700">
-                      {state.promotionDiscount}%
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
         );
 
       case 5:
         const price = calculatePrice();
+        const formatPrice = (num: number): string => {
+          return num.toLocaleString("ru-RU");
+        };
+
+        // Форматирование даты окончания демпинга
+        const formatDate = (dateString?: string) => {
+          if (!dateString) return "";
+          const date = new Date(dateString);
+          return date.toLocaleDateString("ru-RU", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
+        };
+
         return (
           <div className="space-y-6">
-            <div className="rounded-xl bg-gradient-to-r from-purple-50 to-blue-50 p-6 text-center">
-              <h3 className="text-2xl font-bold text-gray-900">
-                Примерная стоимость
-              </h3>
-              <div className="my-4">
-                <div className="text-4xl font-bold text-purple-700">
-                  {formatPrice(price.min)} - {formatPrice(price.max)} ₽
-                </div>
-                <p className="mt-2 text-sm text-gray-600">
-                  Без учета индивидуальных требований и скидок
-                </p>
-                <div className="mt-3 text-sm text-gray-500">
-                  <p>Цены округлены до сотен рублей</p>
-                </div>
+            {isLoading ? (
+              <div className="rounded-xl bg-gradient-to-r from-purple-50 to-blue-50 p-6 text-center">
+                <p>Загрузка данных...</p>
               </div>
-            </div>
+            ) : (
+              <>
+                <div className="rounded-xl bg-gradient-to-r from-purple-50 to-blue-50 p-6 text-center">
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    Примерная стоимость
+                  </h3>
+                  <div className="my-4">
+                    <div className="text-4xl font-bold text-purple-700">
+                      {formatPrice(price.min)} - {formatPrice(price.max)} ₽
+                    </div>
 
-            <div className="space-y-4">
-              <h4 className="font-semibold">Что включено в расчет:</h4>
-              <ul className="space-y-2 text-gray-700">
-                {state.siteType && (
-                  <li>
-                    • Тип:{" "}
-                    {state.siteType === "landing"
-                      ? "Лендинг"
-                      : state.siteType === "visiting-card"
-                        ? "Сайт-визитка"
-                        : state.siteType === "corporate"
-                          ? "Корпоративный сайт"
-                          : state.siteType === "ecommerce"
-                            ? "Интернет-магазин"
-                            : "Несколько сайтов"}
-                  </li>
-                )}
-                {state.hasDesign && (
-                  <li>
-                    • Дизайн:{" "}
-                    {state.hasDesign === "yes" ? "готовый" : "разработка"}
-                  </li>
-                )}
-                {state.hasSpecs && (
-                  <li>
-                    • ТЗ: {state.hasSpecs === "yes" ? "готовое" : "разработка"}
-                  </li>
-                )}
-                {state.pageCount > 1 &&
-                  state.siteType &&
-                  ["visiting-card", "corporate"].includes(state.siteType) && (
-                    <li>• Страниц: {state.pageCount}</li>
-                  )}
-                {state.functionality && (
-                  <li>
-                    • Функционал:{" "}
-                    {state.functionality === "basic"
-                      ? "базовый"
-                      : "расширенный"}
-                  </li>
-                )}
-                {state.needsResponsive && (
-                  <li>
-                    • Адаптив:{" "}
-                    {state.needsResponsive === "yes" ? "нужен" : "не нужен"}
-                  </li>
-                )}
-                {state.urgency && (
-                  <li>
-                    • Сроки:{" "}
-                    {state.urgency === "standard" ? "стандартные" : "срочные"}
-                  </li>
-                )}
-                {state.hasPromotion && (
-                  <li>• Скидка: {state.promotionDiscount}%</li>
-                )}
-              </ul>
-            </div>
+                    {/* Показываем скидку, если она есть */}
+                    {price.hasDiscount && (
+                      <div className="mt-4 space-y-2">
+                        <div className="inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-1">
+                          <span className="font-semibold text-green-800">
+                            🎉 На услугу действует скидка {price.discount}%
+                          </span>
+                        </div>
+                        {price.discountActiveUntil && (
+                          <p className="text-sm text-gray-600">
+                            Демпинг активен до{" "}
+                            {formatDate(price.discountActiveUntil)}
+                          </p>
+                        )}
+                        <p className="text-sm text-gray-500">
+                          Без скидки: {formatPrice(price.baseWithoutDiscount)} ₽
+                        </p>
+                      </div>
+                    )}
 
-            <CTAForm />
+                    <p className="mt-2 text-sm text-gray-600">
+                      Без учета индивидуальных требований
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="font-semibold">Что включено в расчет:</h4>
+                  <ul className="space-y-2 text-gray-700">
+                    {state.siteType && (
+                      <li>
+                        • Тип:{" "}
+                        {state.siteType === "landing"
+                          ? "Лендинг"
+                          : state.siteType === "visiting-card"
+                            ? "Сайт-визитка"
+                            : state.siteType === "corporate"
+                              ? "Корпоративный сайт"
+                              : state.siteType === "ecommerce"
+                                ? "Интернет-магазин"
+                                : "Несколько сайтов"}
+                      </li>
+                    )}
+                    {state.hasDesign && (
+                      <li>
+                        • Дизайн:{" "}
+                        {state.hasDesign === "yes" ? "готовый" : "разработка"}
+                      </li>
+                    )}
+                    {state.hasSpecs && (
+                      <li>
+                        • ТЗ:{" "}
+                        {state.hasSpecs === "yes" ? "готовое" : "разработка"}
+                      </li>
+                    )}
+                    {state.pageCount > 1 &&
+                      state.siteType &&
+                      ["visiting-card", "corporate"].includes(
+                        state.siteType,
+                      ) && <li>• Страниц: {state.pageCount}</li>}
+                    {state.functionality && (
+                      <li>
+                        • Функционал:{" "}
+                        {state.functionality === "basic"
+                          ? "базовый"
+                          : "расширенный"}
+                      </li>
+                    )}
+                    {state.needsResponsive && (
+                      <li>
+                        • Адаптив:{" "}
+                        {state.needsResponsive === "yes" ? "нужен" : "не нужен"}
+                      </li>
+                    )}
+                    {state.urgency && (
+                      <li>
+                        • Сроки:{" "}
+                        {state.urgency === "standard"
+                          ? "стандартные"
+                          : "срочные"}
+                      </li>
+                    )}
+                    {/* Показываем информацию о демпинге/скидке в списке */}
+                    {price.hasDiscount && (
+                      <li className="font-medium text-green-700">
+                        • На услугу действует демпинг/скидка {price.discount}%
+                      </li>
+                    )}
+                  </ul>
+                </div>
+
+                <CTAForm />
+              </>
+            )}
           </div>
         );
 
@@ -619,10 +690,7 @@ const Calculator = () => {
               }}
             />
           </div>
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-purple-600 py-3 font-medium text-white transition-colors hover:bg-purple-700"
-          >
+          <button type="submit" className="btn w-full">
             Получить точный расчет
           </button>
         </form>
@@ -633,10 +701,7 @@ const Calculator = () => {
   return (
     <>
       {/* Кнопка на странице услуги */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="rounded-lg bg-purple-600 px-6 py-3 font-medium text-white shadow-md transition-colors hover:bg-purple-700 hover:shadow-lg"
-      >
+      <button onClick={() => setIsOpen(true)} className="btn">
         Рассчитать стоимость
       </button>
 
@@ -652,7 +717,11 @@ const Calculator = () => {
                     state.step > 1 &&
                     setState({ ...state, step: state.step - 1 })
                   }
-                  className={`rounded-full p-2 hover:bg-gray-100 ${state.step > 1 ? "text-gray-700" : "cursor-default text-gray-300"}`}
+                  className={`rounded-full p-2 hover:bg-gray-100 ${
+                    state.step > 1
+                      ? "text-gray-700"
+                      : "cursor-default text-gray-300"
+                  }`}
                   disabled={state.step <= 1}
                 >
                   <ArrowLeft size={20} />
@@ -664,9 +733,7 @@ const Calculator = () => {
                       <div
                         key={step.id}
                         className={`h-1 w-8 rounded-full transition-all ${
-                          step.id <= state.step
-                            ? "bg-purple-600"
-                            : "bg-gray-200"
+                          step.id <= state.step ? "bg-black" : "bg-gray-200"
                         }`}
                       />
                     ))}
@@ -709,7 +776,7 @@ const Calculator = () => {
                         setState({ ...state, step: state.step + 1 });
                       }
                     }}
-                    className="rounded-lg bg-purple-600 px-6 py-2 text-white transition-colors hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="btn"
                     disabled={!validateStep(state.step)}
                   >
                     {state.step === 4 ? "Рассчитать" : "Далее"}
@@ -724,4 +791,4 @@ const Calculator = () => {
   );
 };
 
-export default Calculator;
+export default CalculatorInfrustructure;

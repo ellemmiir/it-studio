@@ -1,0 +1,35 @@
+/* Только специфические анимации и стили для HeroSection */
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes smoothFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* Стиль только для курсора */
+.cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.2em;
+  margin-left: 2px;
+  background-color: black;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+/* Класс для анимированной стрелки */
+.floating {
+  animation: smoothFloat 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}

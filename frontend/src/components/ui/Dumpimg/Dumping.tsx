@@ -116,34 +116,34 @@
 // export default DumpingLabel;
 
 // МОЖНО БЕЗ "use client" - чистая разметка + CSS классы
-import React from "react";
-import "./Dumping.css"; // Выносим стили в отдельный файл
+// import React from "react";
+// import "./Dumping.css"; // Выносим стили в отдельный файл
 
-interface DumpingLabelProps {
-  activeUntil: string | Date;
-  className?: string;
-}
+// interface DumpingLabelProps {
+//   activeUntil: string | Date;
+//   className?: string;
+// }
 
-const DumpingLabel: React.FC<DumpingLabelProps> = ({
-  activeUntil,
-  className,
-}) => {
-  const formatDate = (date: string | Date) => {
-    const d = new Date(date);
-    return d.toLocaleDateString("ru-RU", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
+// const DumpingLabel: React.FC<DumpingLabelProps> = ({
+//   activeUntil,
+//   className,
+// }) => {
+//   const formatDate = (date: string | Date) => {
+//     const d = new Date(date);
+//     return d.toLocaleDateString("ru-RU", {
+//       day: "2-digit",
+//       month: "2-digit",
+//       year: "numeric",
+//     });
+//   };
 
-  return (
-    <div className={`dumping-label-wrapper ${className}`}>
-      <span className="dumping-label">
-        Демпинг до {formatDate(activeUntil)}
-      </span>
-    </div>
-  );
-};
+//   return (
+//     <div className={`dumping-label-wrapper ${className}`}>
+//       <span className="dumping-label">
+//         Демпинг до {formatDate(activeUntil)}
+//       </span>
+//     </div>
+//   );
+// };
 
-export default DumpingLabel;
+// export default DumpingLabel;

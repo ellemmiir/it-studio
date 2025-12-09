@@ -15,7 +15,6 @@ export const useServices = () => {
 
         const activeServices = await getActiveServices();
 
-        // Добавляем проверку на тип данных
         if (!Array.isArray(activeServices)) {
           throw new Error('Invalid data format received from server');
         }
@@ -24,7 +23,6 @@ export const useServices = () => {
       } catch (err) {
         console.error('Error loading services:', err);
         
-        // Более детальная обработка ошибок
         if (err instanceof Error) {
           setError(`Не удалось загрузить услуги: ${err.message}`);
         } else if (typeof err === 'string') {
@@ -42,7 +40,6 @@ export const useServices = () => {
     loadServices();
   }, []);
 
-  // Функция для повторной попытки загрузки
   const retry = () => {
     setError(null);
     setIsLoading(true);
@@ -72,7 +69,7 @@ export const useServices = () => {
     services, 
     isLoading, 
     error,
-    retry // предоставляем функцию для повторной попытки
+    retry 
   };
 };
 

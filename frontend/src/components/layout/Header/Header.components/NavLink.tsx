@@ -19,20 +19,56 @@ export const NavLink: React.FC<NavLinkProps> = ({
   onMouseLeave,
   children,
 }) => {
-  if (link.href === "/services") {
+  const isServicesLink = link.href === "/services";
+
+  if (isServicesLink) {
     return (
       <div
-        className="relative"
+        className="group relative"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
-        <div className="flex cursor-default items-center font-light text-black transition-colors hover:text-gray-500">
+        <button
+          type="button"
+          className="font-regular hover:text-grey-800 focus-visible:ring-opacity-50 focus-visible:ring-neutral flex items-center rounded px-2 py-1 text-black transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          aria-expanded={isServicesDropdownOpen}
+          aria-haspopup="true"
+          aria-controls="services-dropdown"
+          aria-label={`${link.label}, нажмите чтобы ${isServicesDropdownOpen ? "скрыть" : "показать"} подменю`}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (!isServicesDropdownOpen) {
+              onMouseEnter();
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              if (!isServicesDropdownOpen) {
+                onMouseEnter();
+              }
+            }
+            if (e.key === "Escape" && isServicesDropdownOpen) {
+              e.preventDefault();
+              onMouseLeave();
+            }
+            if (e.key === "ArrowDown" && !isServicesDropdownOpen) {
+              e.preventDefault();
+              onMouseEnter();
+            }
+          }}
+        >
           {link.label}
           <svg
-            className={`ml-1 h-4 w-4 transition-transform ${isServicesDropdownOpen ? "rotate-180" : ""}`}
+            className={`ml-2 h-4 w-4 transition-transform duration-200 ${
+              isServicesDropdownOpen ? "rotate-180" : ""
+            }`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -41,9 +77,17 @@ export const NavLink: React.FC<NavLinkProps> = ({
               d="M19 9l-7 7-7-7"
             />
           </svg>
-        </div>
+        </button>
 
-        {children}
+        <div
+          id="services-dropdown"
+          role="menu"
+          aria-label="Меню услуг"
+          aria-orientation="vertical"
+          aria-labelledby={`services-button-${link.label}`}
+        >
+          {children}
+        </div>
       </div>
     );
   }
@@ -51,7 +95,10 @@ export const NavLink: React.FC<NavLinkProps> = ({
   return (
     <Link
       href={link.href}
-      className="font-light text-black transition-colors hover:text-gray-500"
+      className="font-regular hover:text-grey-800 focus-visible:ring-opacity-50 focus-visible:ring-neutral rounded px-2 py-1 text-black transition-colors focus-visible:ring-2 focus-visible:outline-none"
+      role="menuitem"
+      aria-label={`Перейти на страницу: ${link.label}`}
+      tabIndex={0}
     >
       {link.label}
     </Link>
