@@ -1,19 +1,31 @@
+"use client";
+
+import { useProjectFilters } from "@/features/projects/model/hooks";
+
 interface ProjectFiltersProps {
   activeFilter: string;
   onFilterChange: (filter: string) => void;
-  categories?: Array<{ value: string; label: string }>;
 }
 
 export const ProjectFilters = ({
   activeFilter,
   onFilterChange,
-  categories = [],
 }: ProjectFiltersProps) => {
-  const allCategories = [{ value: "all", label: "Все проекты" }, ...categories];
+  const { data: filters, loading } = useProjectFilters();
+
+  if (loading) {
+    return (
+      <div className="flex animate-pulse flex-wrap gap-4">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="h-10 w-32 rounded-full bg-gray-200" />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-wrap gap-4">
-      {allCategories.map(({ value, label }) => (
+      {filters.map(({ value, label }) => (
         <button
           key={value}
           onClick={() => onFilterChange(value)}

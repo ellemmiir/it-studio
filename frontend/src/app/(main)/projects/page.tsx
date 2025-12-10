@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  useProjects,
-  useProjectCategories,
-} from "@/features/projects/model/hooks";
+import { useProjects } from "@/features/projects/model/hooks";
 import { ProjectCard } from "@/features/projects/ui/components/ProjectCard";
 import { ProjectFilters } from "@/features/projects/ui/components/ProjectFilters";
 
@@ -20,12 +17,10 @@ export default function ProjectsPage() {
     loading,
     error,
   } = useProjects({
-    category: activeFilter,
+    serviceSlug: activeFilter, // Теперь используем serviceSlug вместо category
     limit: PROJECTS_PER_PAGE,
     offset,
   });
-
-  const { data: categories } = useProjectCategories();
 
   const totalPages = Math.ceil(total / PROJECTS_PER_PAGE);
   const currentPage = Math.floor(offset / PROJECTS_PER_PAGE) + 1;
@@ -64,7 +59,6 @@ export default function ProjectsPage() {
           <ProjectFilters
             activeFilter={activeFilter}
             onFilterChange={handleFilterChange}
-            categories={categories}
           />
         </div>
 
@@ -96,7 +90,7 @@ export default function ProjectsPage() {
                     >
                       {loading
                         ? "Загрузка..."
-                        : `Показать еще ${PROJECTS_PER_PAGE} из ${total - projects.length}`}
+                        : `Показать еще ${Math.min(PROJECTS_PER_PAGE, total - projects.length)} из ${total - projects.length}`}
                     </button>
                     <p className="mt-4 text-gray-500">
                       Страница {currentPage} из {totalPages}

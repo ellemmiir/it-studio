@@ -2,10 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-  useProjectsPreview,
-  useProjectCategories,
-} from "@/features/projects/model/hooks";
+import { useProjectsPreview } from "@/features/projects/model/hooks";
 import { ProjectCard } from "../components/ProjectCard";
 import { ProjectFilters } from "../components/ProjectFilters";
 
@@ -13,7 +10,6 @@ export const ProjectsPreview = () => {
   const [activeFilter, setActiveFilter] = useState<string>("all");
 
   const { data: projects, loading } = useProjectsPreview(activeFilter);
-  const { data: categories } = useProjectCategories();
 
   const handleFilterChange = (filter: string) => {
     setActiveFilter(filter);
@@ -46,7 +42,6 @@ export const ProjectsPreview = () => {
         <ProjectFilters
           activeFilter={activeFilter}
           onFilterChange={handleFilterChange}
-          categories={categories}
         />
 
         {loading ? (
