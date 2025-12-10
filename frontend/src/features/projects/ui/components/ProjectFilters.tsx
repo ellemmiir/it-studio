@@ -16,7 +16,7 @@ export const ProjectFilters = ({
   if (loading) {
     return (
       <div className="flex animate-pulse flex-wrap gap-4">
-        {Array.from({ length: 5 }).map((_, i) => (
+        {Array.from({ length: 9 }).map((_, i) => (
           <div key={i} className="h-10 w-32 rounded-full bg-gray-200" />
         ))}
       </div>
@@ -29,10 +29,10 @@ export const ProjectFilters = ({
         <button
           key={value}
           onClick={() => onFilterChange(value)}
-          className={`rounded-full px-6 py-2 transition-colors ${
+          className={`rounded-full px-6 py-3 transition-all duration-200 ${
             activeFilter === value
-              ? "bg-purple-600 text-white"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              ? "scale-105 transform bg-purple-600 text-white shadow-lg"
+              : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow"
           }`}
         >
           {label}

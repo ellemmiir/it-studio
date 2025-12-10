@@ -30,7 +30,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const { data: projects } = await projectsService.getAll({ limit: 100 });
+  // Генерируем статические пути для первых 50 проектов
+  const { data: projects } = await projectsService.getAll({ limit: 50 });
   return projects.map((project) => ({
     slug: project.slug,
   }));

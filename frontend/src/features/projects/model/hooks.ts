@@ -5,7 +5,7 @@ import { projectsService } from './projects.service';
 import { Project, ProjectPreview } from './types';
 
 interface UseProjectsParams {
-  serviceSlug?: string; // Изменяем category на serviceSlug
+  serviceSlug?: string;
   limit?: number;
   offset?: number;
   enabled?: boolean;
@@ -27,17 +27,8 @@ export const useProjects = (params: UseProjectsParams = {}) => {
       setLoading(true);
       setError(null);
       
-      // Преобразуем serviceSlug в category для фильтрации
-      let category;
-      if (serviceSlug && serviceSlug !== 'all') {
-        // Здесь нужно преобразовать slug услуги в категорию проекта
-        // Это можно сделать через отдельный endpoint или маппинг
-        // Пока используем как есть (нужно будет реализовать маппинг)
-        category = serviceSlug;
-      }
-      
       const response = await projectsService.getAll({ 
-        category, 
+        serviceSlug, 
         limit, 
         offset 
       });
@@ -66,7 +57,7 @@ export const useProjects = (params: UseProjectsParams = {}) => {
 };
 
 // Хук для получения превью проектов (для главной страницы)
-export const useProjectsPreview = (serviceSlug?: string, limit?: number) => {
+export const useProjectsPreview = (serviceSlug?: string) => {
   const [data, setData] = useState<ProjectPreview[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -75,7 +66,7 @@ export const useProjectsPreview = (serviceSlug?: string, limit?: number) => {
     try {
       setLoading(true);
       setError(null);
-      const result = await projectsService.getPreview(limit, serviceSlug);
+      const result = await projectsService.getPreview(serviceSlug);
       setData(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
@@ -83,7 +74,7 @@ export const useProjectsPreview = (serviceSlug?: string, limit?: number) => {
     } finally {
       setLoading(false);
     }
-  }, [serviceSlug, limit]);
+  }, [serviceSlug]);
 
   useEffect(() => {
     fetchProjects();
@@ -160,39 +151,5 @@ export const useProjectBySlug = (slug: string) => {
     loading, 
     error,
     refetch: fetchProject 
-  };
-};
-
-// Хук для получения связанных проектов
-export const useRelatedProjects = (slug: string, limit: number = 3) => {
-  const [data, setData] = useState<ProjectPreview[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchRelated = useCallback(async () => {
-    if (!slug) return;
-
-    try {
-      setLoading(true);
-      setError(null);
-      const result = await projectsService.getRelated(slug, limit);
-      setData(result);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-      setData([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [slug, limit]);
-
-  useEffect(() => {
-    fetchRelated();
-  }, [fetchRelated]);
-
-  return { 
-    data, 
-    loading, 
-    error,
-    refetch: fetchRelated 
   };
 };

@@ -1,9 +1,10 @@
 import { apiClient } from '../client';
 import { Project, ProjectPreview } from '@/features/projects/model/types';
+import { Service } from '@/features/services/model/types'; // Для типизации услуг
 
-// Временная заглушка с 50 проектами
+// Временная заглушка с проектами (50 проектов как вы указали)
 const MOCK_PROJECTS: Project[] = [
-  {
+   {
     _id: "1",
     title: "Radiant Skincare E-commerce Platform",
     description: "Разработка высоконагруженной e-commerce платформы для бренда ухода за кожей",
@@ -183,756 +184,50 @@ const MOCK_PROJECTS: Project[] = [
     createdAt: "2024-06-15",
     updatedAt: "2024-06-15"
   },
-  {
-    _id: "11",
-    title: "Blockchain Supply Chain",
-    description: "Блокчейн-платформа для отслеживания цепочек поставок",
-    fullDescription: "Создание прозрачной системы отслеживания товаров от производителя к потребителю с использованием блокчейн-технологии.",
-    category: "blockchain",
-    tags: ["BLOCKCHAIN", "SUPPLY CHAIN", "TRANSPARENCY", "SMART CONTRACTS"],
-    image: "/images/content/test11.jpg",
-    slug: "blockchain-supply-chain",
-    client: "Global Logistics Inc.",
-    duration: "7 месяцев",
-    technologies: ["Ethereum", "Solidity", "Node.js", "React", "IPFS", "Web3.js"],
-    challenges: ["Масштабирование блокчейн-сети", "Интеграция с существующими ERP", "Обучение персонала"],
-    solutions: ["Layer 2 решение на Polygon", "REST API для интеграции", "Интерактивные туториалы"],
-    results: ["Сокращение бумажного документооборота на 90%", "Повышение доверия клиентов на 60%", "Снижение фальсификаций на 95%"],
-    createdAt: "2024-07-01",
-    updatedAt: "2024-07-01"
-  },
-  {
-    _id: "12",
-    title: "AR Furniture Application",
-    description: "AR-приложение для виртуальной примерки мебели",
-    fullDescription: "Разработка мобильного приложения с дополненной реальностью для визуализации мебели в интерьере перед покупкой.",
-    category: "mobile-development",
-    tags: ["AR", "MOBILE", "3D", "E-COMMERCE"],
-    image: "/images/content/test12.jpg",
-    slug: "ar-furniture-application",
-    client: "HomeStyle Furniture",
-    duration: "4 месяца",
-    technologies: ["Unity", "ARKit", "ARCore", "React Native", "Firebase", "Blender"],
-    challenges: ["Точное позиционирование 3D-моделей", "Оптимизация для мобильных устройств", "Создание реалистичных материалов"],
-    solutions: ["SLAM-алгоритмы для позиционирования", "LOD системы для оптимизации", "PBR материалы для реализма"],
-    results: ["Увеличение конверсии на 45%", "Снижение возвратов на 70%", "Рост среднего чека на 30%"],
-    createdAt: "2024-08-10",
-    updatedAt: "2024-08-10"
-  },
-  {
-    _id: "13",
-    title: "Cybersecurity Monitoring System",
-    description: "Система мониторинга кибербезопасности для банка",
-    fullDescription: "Разработка системы обнаружения и предотвращения кибератак в реальном времени для финансового учреждения.",
-    category: "cybersecurity",
-    tags: ["SECURITY", "MONITORING", "REAL-TIME", "FINANCE"],
-    image: "/images/content/test13.jpg",
-    slug: "cybersecurity-monitoring-system",
-    client: "SecureBank",
-    duration: "6 месяцев",
-    technologies: ["Python", "Elasticsearch", "Kibana", "Docker", "ML", "SIEM"],
-    challenges: ["Обработка 1TB+ логов ежедневно", "Минимизация ложных срабатываний", "Соответствие регуляторным требованиям"],
-    solutions: ["ML-модели для аномалий", "Правила корреляции событий", "Автоматические отчеты для регуляторов"],
-    results: ["Обнаружение 99.9% угроз", "Сокращение времени реакции с часов до минут", "Соответствие PCI DSS и ISO 27001"],
-    createdAt: "2024-09-05",
-    updatedAt: "2024-09-05"
-  },
-  {
-    _id: "14",
-    title: "Green Energy Management",
-    description: "Платформа управления возобновляемыми источниками энергии",
-    fullDescription: "Система для мониторинга и оптимизации работы солнечных панелей и ветрогенераторов в умных городах.",
-    category: "iot",
-    tags: ["IOT", "GREEN ENERGY", "SMART GRID", "ANALYTICS"],
-    image: "/images/content/test14.jpg",
-    slug: "green-energy-management",
-    client: "EcoPower Solutions",
-    duration: "5 месяцев",
-    technologies: ["Node.js", "MQTT", "InfluxDB", "Grafana", "React", "Python"],
-    challenges: ["Интеграция с различными типами оборудования", "Прогнозирование выработки энергии", "Балансировка нагрузки сети"],
-    solutions: ["Универсальный протокол для устройств", "ML-модели прогнозирования", "Алгоритмы балансировки нагрузки"],
-    results: ["Увеличение эффективности на 25%", "Снижение потерь энергии на 15%", "Автоматизация управления сетью"],
-    createdAt: "2024-10-01",
-    updatedAt: "2024-10-01"
-  },
-  {
-    _id: "15",
-    title: "Gaming Tournament Platform",
-    description: "Платформа для проведения киберспортивных турниров",
-    fullDescription: "Создание платформы для организации и проведения онлайн-турниров с системой регистрации, стримингом и автоматическими выплатами.",
-    category: "gaming",
-    tags: ["GAMING", "ESPORTS", "STREAMING", "PAYMENTS"],
-    image: "/images/content/test15.jpg",
-    slug: "gaming-tournament-platform",
-    client: "GamePro Esports",
-    duration: "4 месяца",
-    technologies: ["React", "Node.js", "WebSockets", "WebRTC", "Stripe", "Docker"],
-    challenges: ["Поддержка 50,000+ зрителей", "Защита от читов", "Мгновенные выплаты призеров"],
-    solutions: ["CDN для стримов", "Античит система", "Интеграция с платежными системами"],
-    results: ["Проведение 100+ турниров ежемесячно", "Аудитория 500,000+ зрителей", "Автоматические выплаты за 5 минут"],
-    createdAt: "2024-10-20",
-    updatedAt: "2024-10-20"
-  },
-  {
-    _id: "16",
-    title: "Legal Document Automation",
-    description: "Система автоматизации составления юридических документов",
-    fullDescription: "AI-платформа для автоматического составления договоров, соглашений и других юридических документов.",
-    category: "ai-integration",
-    tags: ["AI", "LEGAL", "AUTOMATION", "NLP"],
-    image: "/images/content/test16.jpg",
-    slug: "legal-document-automation",
-    client: "LawTech Partners",
-    duration: "6 месяцев",
-    technologies: ["Python", "FastAPI", "GPT-4", "React", "PostgreSQL", "Docker"],
-    challenges: ["Точность юридических формулировок", "Поддержка различных юрисдикций", "Конфиденциальность данных"],
-    solutions: ["Fine-tuning LLM на юридических текстах", "База шаблонов для юрисдикций", "End-to-end шифрование"],
-    results: ["Сокращение времени составления документов на 90%", "Уменьшение ошибок на 95%", "Экономия $1.5M на юридических услугах"],
-    createdAt: "2024-11-01",
-    updatedAt: "2024-11-01"
-  },
-  {
-    _id: "17",
-    title: "Real Estate Virtual Tours",
-    description: "Платформа для виртуальных туров по недвижимости",
-    fullDescription: "Создание системы 360° виртуальных туров с возможностью измерений и онлайн-просмотров.",
-    category: "vr-ar",
-    tags: ["VR", "REAL ESTATE", "3D", "IMMERSIVE"],
-    image: "/images/content/test17.jpg",
-    slug: "real-estate-virtual-tours",
-    client: "Prime Properties",
-    duration: "3 месяца",
-    technologies: ["Three.js", "React", "Node.js", "WebGL", "AWS S3", "WebXR"],
-    challenges: ["Быстрая загрузка 3D-моделей", "Кросс-браузерная совместимость", "Точные измерения в VR"],
-    solutions: ["Оптимизация 3D-моделей", "Progressive Web App", "Точные алгоритмы измерений"],
-    results: ["Увеличение просмотров на 300%", "Сокращение времени сделок на 40%", "Снижение необходимости физических показов на 60%"],
-    createdAt: "2024-11-15",
-    updatedAt: "2024-11-15"
-  },
-  {
-    _id: "18",
-    title: "Food Delivery Optimization",
-    description: "AI-система оптимизации маршрутов доставки еды",
-    fullDescription: "Разработка системы для оптимизации маршрутов курьеров в реальном времени с учетом пробок и погоды.",
-    category: "ai-integration",
-    tags: ["AI", "LOGISTICS", "OPTIMIZATION", "REAL-TIME"],
-    image: "/images/content/test18.jpg",
-    slug: "food-delivery-optimization",
-    client: "QuickBite Delivery",
-    duration: "4 месяца",
-    technologies: ["Python", "TensorFlow", "Node.js", "React", "Google Maps API", "Redis"],
-    challenges: ["Оптимизация 1000+ маршрутов одновременно", "Учет погодных условий", "Минимизация времени доставки"],
-    solutions: ["Генетические алгоритмы для маршрутов", "Интеграция с погодными API", "Real-time перепланирование"],
-    results: ["Снижение времени доставки на 35%", "Увеличение количества заказов на 50%", "Экономия топлива на 20%"],
-    createdAt: "2024-12-01",
-    updatedAt: "2024-12-01"
-  },
-  {
-    _id: "19",
-    title: "Fitness AI Coach",
-    description: "Приложение для персональных тренировок с ИИ-тренером",
-    fullDescription: "Мобильное приложение с компьютерным зрением для анализа упражнений и создания персонализированных программ тренировок.",
-    category: "mobile-development",
-    tags: ["AI", "FITNESS", "COMPUTER VISION", "MOBILE"],
-    image: "/images/content/test19.jpg",
-    slug: "fitness-ai-coach",
-    client: "FitTech Solutions",
-    duration: "5 месяцев",
-    technologies: ["React Native", "TensorFlow Lite", "Node.js", "MongoDB", "WebRTC", "Firebase"],
-    challenges: ["Точное отслеживание позы в реальном времени", "Персонализация для разных уровней подготовки", "Мотивация пользователей"],
-    solutions: ["Pose estimation модели", "Адаптивные программы тренировок", "Геймификация и достижения"],
-    results: ["Улучшение техники выполнения на 80%", "Удержание пользователей на 300% выше рынка", "Средняя оценка 4.9 в магазинах приложений"],
-    createdAt: "2025-01-10",
-    updatedAt: "2025-01-10"
-  },
-  {
-    _id: "20",
-    title: "Hotel Management System",
-    description: "Комплексная система управления отелем",
-    fullDescription: "Разработка системы для управления бронированиями, заселением, обслуживанием номеров и аналитикой отеля.",
-    category: "hospitality",
-    tags: ["HOSPITALITY", "MANAGEMENT", "BOOKING", "ANALYTICS"],
-    image: "/images/content/test20.jpg",
-    slug: "hotel-management-system",
-    client: "Grand Hotel Chain",
-    duration: "6 месяцев",
-    technologies: ["Java Spring Boot", "React", "PostgreSQL", "Redis", "Docker", "Kubernetes"],
-    challenges: ["Интеграция с 10+ сторонними системами", "Поддержка 24/7 без простоев", "Мультиязычность и мультивалютность"],
-    solutions: ["API Gateway для интеграций", "High availability архитектура", "Локализация для 20+ языков"],
-    results: ["Увеличение загрузки номеров на 25%", "Сокращение операционных затрат на 30%", "Улучшение оценки гостей на 1.5 балла"],
-    createdAt: "2025-02-01",
-    updatedAt: "2025-02-01"
-  },
-  // Продолжаем до 50 проектов...
-  {
-    _id: "21",
-    title: "Digital Marketing Analytics",
-    description: "Платформа аналитики digital-маркетинга",
-    fullDescription: "Система для отслеживания эффективности маркетинговых кампаний на всех каналах с AI-рекомендациями.",
-    category: "data-analytics",
-    tags: ["MARKETING", "ANALYTICS", "AI", "DASHBOARD"],
-    image: "/images/content/test21.jpg",
-    slug: "digital-marketing-analytics",
-    client: "AdTech Solutions",
-    duration: "4 месяца",
-    technologies: ["Python", "React", "PostgreSQL", "Apache Spark", "Machine Learning", "D3.js"],
-    challenges: ["Агрегация данных с 50+ маркетинговых платформ", "Real-time обработка", "Прогнозирование ROI"],
-    solutions: ["Единый data warehouse", "Stream processing", "Predictive models"],
-    results: ["Увеличение ROI на 40%", "Сокращение CAC на 25%", "Автоматизация отчетов на 80%"],
-    createdAt: "2025-02-15",
-    updatedAt: "2025-02-15"
-  },
-  {
-    _id: "22",
-    title: "Warehouse Robotics Control",
-    description: "Система управления роботизированным складом",
-    fullDescription: "Разработка ПО для управления флотом автономных роботов на складе.",
-    category: "robotics",
-    tags: ["ROBOTICS", "AUTOMATION", "WAREHOUSE", "AI"],
-    image: "/images/content/test22.jpg",
-    slug: "warehouse-robotics-control",
-    client: "LogiBot Systems",
-    duration: "8 месяцев",
-    technologies: ["ROS", "Python", "C++", "React", "WebSocket", "Docker"],
-    challenges: ["Координация 100+ роботов", "Избегание коллизий", "Оптимизация маршрутов"],
-    solutions: ["Централизованная система управления", "Алгоритмы предотвращения столкновений", "Динамическое планирование маршрутов"],
-    results: ["Увеличение производительности на 300%", "Снижение ошибок до 0.01%", "Экономия $5M в год"],
-    createdAt: "2025-03-01",
-    updatedAt: "2025-03-01"
-  },
-  {
-    _id: "23",
-    title: "Insurance Claims Automation",
-    description: "Автоматизация обработки страховых случаев",
-    fullDescription: "AI-система для автоматической обработки заявлений о страховых случаях с компьютерным зрением для оценки ущерба.",
-    category: "ai-integration",
-    tags: ["INSURANCE", "AI", "AUTOMATION", "COMPUTER VISION"],
-    image: "/images/content/test23.jpg",
-    slug: "insurance-claims-automation",
-    client: "InsureTech Corp",
-    duration: "6 месяцев",
-    technologies: ["Python", "FastAPI", "OpenCV", "React", "PostgreSQL", "Docker"],
-    challenges: ["Анализ фотографий повреждений", "Обнаружение мошенничества", "Интеграция с legacy системами"],
-    solutions: ["CV модели для оценки ущерба", "ML модели для обнаружения аномалий", "API для интеграции"],
-    results: ["Сокращение времени обработки с 5 дней до 2 часов", "Выявление мошенничества на 95%", "Экономия $10M в год"],
-    createdAt: "2025-03-15",
-    updatedAt: "2025-03-15"
-  },
-  {
-    _id: "24",
-    title: "Event Management Platform",
-    description: "Платформа для организации масштабных мероприятий",
-    fullDescription: "Комплексная система для планирования, продажи билетов и проведения мероприятий.",
-    category: "software-development",
-    tags: ["EVENTS", "TICKETING", "MANAGEMENT", "MOBILE"],
-    image: "/images/content/test24.jpg",
-    slug: "event-management-platform",
-    client: "EventPro Global",
-    duration: "5 месяцев",
-    technologies: ["React", "Node.js", "MongoDB", "WebSocket", "Stripe", "Docker"],
-    challenges: ["Продажа 100,000+ билетов за минуты", "Управление очередями", "Навигация на мероприятии"],
-    solutions: ["Микросервисы для масштабирования", "Система управления очередями", "Indoor navigation"],
-    results: ["Проведение 500+ мероприятий", "Продажа 2M+ билетов", "Удовлетворенность организаторов 98%"],
-    createdAt: "2025-04-01",
-    updatedAt: "2025-04-01"
-  },
-  {
-    _id: "25",
-    title: "Agricultural IoT Monitoring",
-    description: "IoT-система мониторинга сельскохозяйственных угодий",
-    fullDescription: "Система датчиков и аналитики для оптимизации полива, удобрения и сбора урожая.",
-    category: "iot",
-    tags: ["IOT", "AGRICULTURE", "SENSORS", "ANALYTICS"],
-    image: "/images/content/test25.jpg",
-    slug: "agricultural-iot-monitoring",
-    client: "AgroTech Solutions",
-    duration: "7 месяцев",
-    technologies: ["Python", "MQTT", "React", "PostgreSQL", "Machine Learning", "Docker"],
-    challenges: ["Работа в удаленных районах", "Анализ мультиспектральных снимков", "Прогнозирование урожайности"],
-    solutions: ["LPWAN сети", "AI анализ спутниковых данных", "Predictive models"],
-    results: ["Увеличение урожайности на 30%", "Снижение расхода воды на 40%", "Оптимизация удобрений на 25%"],
-    createdAt: "2025-04-15",
-    updatedAt: "2025-04-15"
-  },
-  {
-    _id: "26",
-    title: "Content Management Platform",
-    description: "Корпоративная система управления контентом",
-    fullDescription: "Разработка CMS для крупных издательств с поддержкой мультимедиа и workflow.",
-    category: "software-development",
-    tags: ["CMS", "CONTENT", "PUBLISHING", "WORKFLOW"],
-    image: "/images/content/test26.jpg",
-    slug: "content-management-platform",
-    client: "MediaCorp International",
-    duration: "6 месяцев",
-    technologies: ["React", "Node.js", "MongoDB", "AWS S3", "Elasticsearch", "Docker"],
-    challenges: ["Управление 1M+ статей", "Мультиредакторская работа", "Публикация на 100+ сайтах"],
-    solutions: ["Version control для контента", "Collaborative editing", "Headless CMS архитектура"],
-    results: ["Ускорение публикации на 70%", "Снижение ошибок на 90%", "Единая платформа для всех медиа"],
-    createdAt: "2025-05-01",
-    updatedAt: "2025-05-01"
-  },
-  {
-    _id: "27",
-    title: "Smart Parking System",
-    description: "Система умной парковки с датчиками и мобильным приложением",
-    fullDescription: "IoT-решение для мониторинга свободных парковочных мест и онлайн-бронирования.",
-    category: "iot",
-    tags: ["IOT", "SMART CITY", "PARKING", "MOBILE"],
-    image: "/images/content/test27.jpg",
-    slug: "smart-parking-system",
-    client: "ParkSmart Solutions",
-    duration: "4 месяца",
-    technologies: ["Node.js", "React Native", "MQTT", "PostgreSQL", "AWS IoT", "Docker"],
-    challenges: ["Точность обнаружения занятых мест", "Работа в подземных паркингах", "Интеграция с платежными системами"],
-    solutions: ["Ультразвуковые датчики", "Bluetooth beacons для навигации", "Интеграция с Stripe и PayPal"],
-    results: ["Увеличение загрузки парковки на 40%", "Сокращение времени поиска места на 70%", "Рост выручки на 60%"],
-    createdAt: "2025-05-15",
-    updatedAt: "2025-05-15"
-  },
-  {
-    _id: "28",
-    title: "HR Recruitment Platform",
-    description: "AI-платформа для автоматизации найма персонала",
-    fullDescription: "Система для поиска, оценки и найма кандидатов с использованием искусственного интеллекта.",
-    category: "ai-integration",
-    tags: ["HR", "RECRUITMENT", "AI", "ASSESSMENT"],
-    image: "/images/content/test28.jpg",
-    slug: "hr-recruitment-platform",
-    client: "TalentFinders Inc.",
-    duration: "5 месяцев",
-    technologies: ["Python", "FastAPI", "React", "PostgreSQL", "NLP", "Docker"],
-    challenges: ["Анализ 10,000+ резюме ежедневно", "Объективная оценка навыков", "Снижение bias при отборе"],
-    solutions: ["NLP для анализа резюме", "Симуляционные тесты", "Алгоритмы для уменьшения bias"],
-    results: ["Сокращение времени найма на 80%", "Улучшение качества найма на 40%", "Снижение затрат на рекрутинг на 60%"],
-    createdAt: "2025-06-01",
-    updatedAt: "2025-06-01"
-  },
-  {
-    _id: "29",
-    title: "Fleet Management System",
-    description: "Система управления автопарком",
-    fullDescription: "Комплексное решение для отслеживания, обслуживания и оптимизации работы транспортных средств.",
-    category: "iot",
-    tags: ["FLEET", "LOGISTICS", "GPS", "ANALYTICS"],
-    image: "/images/content/test29.jpg",
-    slug: "fleet-management-system",
-    client: "TransGlobal Logistics",
-    duration: "6 месяцев",
-    technologies: ["React", "Node.js", "MongoDB", "MQTT", "Mapbox", "Docker"],
-    challenges: ["Отслеживание 5000+ транспортных средств", "Прогнозирование технического обслуживания", "Оптимизация маршрутов"],
-    solutions: ["Real-time GPS tracking", "Predictive maintenance", "Route optimization algorithms"],
-    results: ["Снижение расходов на топливо на 25%", "Увеличение использования парка на 30%", "Сокращение простоев на 40%"],
-    createdAt: "2025-06-15",
-    updatedAt: "2025-06-15"
-  },
-  {
-    _id: "30",
-    title: "Digital Twin Factory",
-    description: "Цифровой двойник производственного предприятия",
-    fullDescription: "Создание виртуальной копии фабрики для симуляции, оптимизации и прогнозирования.",
-    category: "digital-twin",
-    tags: ["DIGITAL TWIN", "MANUFACTURING", "SIMULATION", "IOT"],
-    image: "/images/content/test30.jpg",
-    slug: "digital-twin-factory",
-    client: "AutoManufacturing Co.",
-    duration: "9 месяцев",
-    technologies: ["Unity", "C#", "Python", "React", "MQTT", "Azure Digital Twins"],
-    challenges: ["Интеграция с 1000+ датчиков", "Real-time симуляция", "Прогнозирование сбоев"],
-    solutions: ["OPC UA для интеграции", "High-performance simulation", "ML для predictive maintenance"],
-    results: ["Снижение времени простоя на 50%", "Увеличение производительности на 25%", "Предотвращение сбоев на 80%"],
-    createdAt: "2025-07-01",
-    updatedAt: "2025-07-01"
-  },
-  // Продолжаем еще 20 проектов...
-  {
-    _id: "31",
-    title: "Voice Assistant for Banking",
-    description: "Голосовой ассистент для банковских операций",
-    category: "ai-integration",
-    tags: ["VOICE", "BANKING", "AI", "NLP"],
-    image: "/images/content/test31.jpg",
-    slug: "voice-assistant-for-banking",
-    client: "VoiceBank Inc.",
-    duration: "5 месяцев",
-    technologies: ["Python", "FastAPI", "React Native", "NLP", "WebSocket"],
-    results: ["Автоматизация 60% звонков", "Удовлетворенность клиентов 95%", "Круглосуточная поддержка"],
-    challenges: ["Распознавание акцентов", "Безопасность операций", "Интеграция с банковскими системами"],
-    solutions: ["Мультиязычные модели", "Голосовая биометрия", "Secure API Gateway"],
-    fullDescription: "Разработка голосового помощника для выполнения банковских операций через голосовые команды.",
-    createdAt: "2025-07-15",
-    updatedAt: "2025-07-15"
-  },
-  {
-    _id: "32",
-    title: "Construction Site Monitoring",
-    description: "Дрон-система мониторинга строительных площадок",
-    category: "iot",
-    tags: ["DRONES", "CONSTRUCTION", "MONITORING", "AI"],
-    image: "/images/content/test32.jpg",
-    slug: "construction-site-monitoring",
-    client: "BuildTech Solutions",
-    duration: "4 месяца",
-    technologies: ["Python", "OpenCV", "React", "DJI SDK", "AWS"],
-    results: ["Снижение нарушений безопасности на 70%", "Ускорение строительства на 20%", "Автоматизация инспекций"],
-    challenges: ["Автоматический полет дронов", "Анализ изображений в реальном времени", "Интеграция с BIM"],
-    solutions: ["Автопилот для дронов", "Computer vision модели", "BIM API интеграция"],
-    fullDescription: "Система автоматических дронов для мониторинга прогресса строительства и безопасности.",
-    createdAt: "2025-08-01",
-    updatedAt: "2025-08-01"
-  },
-  {
-    _id: "33",
-    title: "Cryptocurrency Exchange",
-    description: "Высоконагруженная криптобиржа",
-    category: "blockchain",
-    tags: ["CRYPTO", "EXCHANGE", "TRADING", "SECURITY"],
-    image: "/images/content/test33.jpg",
-    slug: "cryptocurrency-exchange",
-    client: "CryptoPro Exchange",
-    duration: "8 месяцев",
-    technologies: ["Go", "React", "PostgreSQL", "Redis", "Kubernetes"],
-    results: ["Обработка 100,000 транзакций в секунду", "Безопасность 100%", "Поддержка 50+ криптовалют"],
-    challenges: ["Низкая задержка", "Защита от атак", "Соответствие регуляциям"],
-    solutions: ["In-memory order book", "Multi-layer security", "KYC/AML интеграция"],
-    fullDescription: "Разработка высокопроизводительной и безопасной платформы для торговли криптовалютами.",
-    createdAt: "2025-08-15",
-    updatedAt: "2025-08-15"
-  },
-  {
-    _id: "34",
-    title: "Waste Management Optimization",
-    description: "AI-система оптимизации сбора мусора",
-    category: "ai-integration",
-    tags: ["AI", "WASTE", "OPTIMIZATION", "IOT"],
-    image: "/images/content/test34.jpg",
-    slug: "waste-management-optimization",
-    client: "EcoCity Municipal",
-    duration: "6 месяцев",
-    technologies: ["Python", "React", "IoT", "ML", "Docker"],
-    results: ["Сокращение маршрутов на 30%", "Экономия топлива на 25%", "Увеличение переработки на 40%"],
-    challenges: ["Определение заполненности контейнеров", "Оптимизация маршрутов", "Интеграция с городской инфраструктурой"],
-    solutions: ["Умные датчики", "Алгоритмы маршрутизации", "API для интеграции"],
-    fullDescription: "Система для оптимизации маршрутов мусоровозов с использованием датчиков и искусственного интеллекта.",
-    createdAt: "2025-09-01",
-    updatedAt: "2025-09-01"
-  },
-  {
-    _id: "35",
-    title: "Personal Finance Advisor",
-    description: "ИИ-советник по личным финансам",
-    category: "mobile-development",
-    tags: ["FINTECH", "AI", "MOBILE", "PERSONALIZATION"],
-    image: "/images/content/test35.jpg",
-    slug: "personal-finance-advisor",
-    client: "MoneySmart App",
-    duration: "5 месяцев",
-    technologies: ["React Native", "Python", "ML", "Firebase", "Docker"],
-    results: ["Увеличение сбережений пользователей на 35%", "1M+ пользователей", "Рейтинг 4.8 в магазинах приложений"],
-    challenges: ["Анализ финансовых привычек", "Персонализация рекомендаций", "Безопасность финансовых данных"],
-    solutions: ["ML для анализа расходов", "Адаптивные рекомендации", "End-to-end шифрование"],
-    fullDescription: "Мобильное приложение с ИИ для анализа расходов и создания персонализированных финансовых планов.",
-    createdAt: "2025-09-15",
-    updatedAt: "2025-09-15"
-  },
-  {
-    _id: "36",
-    title: "Pharmacy Management System",
-    description: "Комплексная система управления аптечной сетью",
-    category: "healthcare",
-    tags: ["PHARMACY", "HEALTHCARE", "INVENTORY", "ANALYTICS"],
-    image: "/images/content/test36.jpg",
-    slug: "pharmacy-management-system",
-    client: "PharmaChain Network",
-    duration: "7 месяцев",
-    technologies: ["Java", "React", "PostgreSQL", "Redis", "Docker"],
-    results: ["Сокращение излишков на 40%", "Автоматизация заказов на 90%", "Снижение ошибок до 0.1%"],
-    challenges: ["Управление сроком годности", "Интеграция с поставщиками", "Соответствие регуляциям"],
-    solutions: ["Автоматическое отслеживание сроков", "EDI интеграция", "Compliance dashboard"],
-    fullDescription: "Система для управления инвентарем, заказами и аналитикой для сети аптек.",
-    createdAt: "2025-10-01",
-    updatedAt: "2025-10-01"
-  },
-  {
-    _id: "37",
-    title: "Sports Analytics Platform",
-    description: "Платформа аналитики для профессиональных спортивных команд",
-    category: "data-analytics",
-    tags: ["SPORTS", "ANALYTICS", "AI", "PERFORMANCE"],
-    image: "/images/content/test37.jpg",
-    slug: "sports-analytics-platform",
-    client: "ProSports Analytics",
-    duration: "6 месяцев",
-    technologies: ["Python", "React", "PostgreSQL", "ML", "Docker"],
-    results: ["Улучшение результатов команд на 15%", "Снижение травматизма на 30%", "Оптимизация стратегий"],
-    challenges: ["Обработка данных с носимых устройств", "Real-time анализ", "Визуализация сложных данных"],
-    solutions: ["Stream processing", "Real-time ML модели", "Интерактивные дашборды"],
-    fullDescription: "Система для анализа производительности спортсменов и разработки оптимальных стратегий.",
-    createdAt: "2025-10-15",
-    updatedAt: "2025-10-15"
-  },
-  {
-    _id: "38",
-    title: "Language Learning AI",
-    description: "ИИ-платформа для изучения языков",
-    category: "ai-integration",
-    tags: ["EDUCATION", "AI", "LANGUAGE", "MOBILE"],
-    image: "/images/content/test38.jpg",
-    slug: "language-learning-ai",
-    client: "LinguaTech",
-    duration: "8 месяцев",
-    technologies: ["Python", "React Native", "NLP", "Speech Recognition", "Docker"],
-    results: ["Ускорение изучения на 50%", "2M+ активных пользователей", "Поддержка 20+ языков"],
-    challenges: ["Распознавание акцентов", "Адаптация к уровню ученика", "Мотивация к регулярным занятиям"],
-    solutions: ["Адаптивные модели распознавания", "Personalized learning paths", "Геймификация"],
-    fullDescription: "Приложение для изучения языков с использованием ИИ для персонализации и обратной связи.",
-    createdAt: "2025-11-01",
-    updatedAt: "2025-11-01"
-  },
-  {
-    _id: "39",
-    title: "Car Rental Platform",
-    description: "Платформа для аренды автомобилей с поддержкой blockchain",
-    category: "blockchain",
-    tags: ["CAR RENTAL", "BLOCKCHAIN", "MOBILE", "PAYMENTS"],
-    image: "/images/content/test39.jpg",
-    slug: "car-rental-platform",
-    client: "RentACar Global",
-    duration: "5 месяцев",
-    technologies: ["React Native", "Node.js", "Ethereum", "Smart Contracts", "Docker"],
-    results: ["Снижение мошенничества на 95%", "Автоматизация 90% процессов", "Глобальная экспансия"],
-    challenges: ["Проверка водителей", "Автоматические платежи", "Международные операции"],
-    solutions: ["Blockchain для идентификации", "Smart contracts для платежей", "Мультивалютная поддержка"],
-    fullDescription: "Децентрализованная платформа для аренды автомобилей с использованием blockchain для безопасности и прозрачности.",
-    createdAt: "2025-11-15",
-    updatedAt: "2025-11-15"
-  },
-  {
-    _id: "40",
-    title: "Industrial Predictive Maintenance",
-    description: "Система прогнозирования поломок промышленного оборудования",
-    category: "ai-integration",
-    tags: ["INDUSTRIAL", "PREDICTIVE", "IOT", "MAINTENANCE"],
-    image: "/images/content/test40.jpg",
-    slug: "industrial-predictive-maintenance",
-    client: "HeavyIndustries Co.",
-    duration: "9 месяцев",
-    technologies: ["Python", "React", "IoT", "ML", "Time Series"],
-    results: ["Снижение простоев на 60%", "Экономия на обслуживании $5M", "Увеличение срока службы оборудования"],
-    challenges: ["Анализ вибрационных данных", "Прогнозирование редких событий", "Интеграция с SCADA"],
-    solutions: ["Signal processing алгоритмы", "Anomaly detection модели", "OPC UA интеграция"],
-    fullDescription: "AI-система для прогнозирования поломок промышленного оборудования на основе данных с датчиков.",
-    createdAt: "2025-12-01",
-    updatedAt: "2025-12-01"
-  },
-  // Последние 10 проектов...
-  {
-    _id: "41",
-    title: "Mental Health AI Assistant",
-    description: "ИИ-ассистент для поддержки ментального здоровья",
-    category: "ai-integration",
-    tags: ["HEALTH", "AI", "MENTAL", "MOBILE"],
-    image: "/images/content/test41.jpg",
-    slug: "mental-health-ai-assistant",
-    client: "MindCare Solutions",
-    duration: "7 месяцев",
-    technologies: ["Python", "React Native", "NLP", "ML", "Docker"],
-    results: ["Помощь 500,000+ пользователям", "Снижение симптомов на 40%", "Круглосуточная поддержка"],
-    challenges: ["Эмпатичные ответы", "Кризисные ситуации", "Конфиденциальность"],
-    solutions: ["Empathy models", "Кризисные протоколы", "End-to-end шифрование"],
-    fullDescription: "Мобильное приложение с ИИ для поддержки ментального здоровья и эмоционального благополучия.",
-    createdAt: "2026-01-01",
-    updatedAt: "2026-01-01"
-  },
-  {
-    _id: "42",
-    title: "Smart Home Automation",
-    description: "Комплексная система умного дома",
-    category: "iot",
-    tags: ["SMART HOME", "IOT", "AUTOMATION", "AI"],
-    image: "/images/content/test42.jpg",
-    slug: "smart-home-automation",
-    client: "HomeSmart Tech",
-    duration: "6 месяцев",
-    technologies: ["Python", "React", "MQTT", "Node.js", "Docker"],
-    results: ["Экономия энергии на 35%", "Автоматизация 90% процессов", "Интеграция 100+ устройств"],
-    challenges: ["Совместимость устройств", "Безопасность", "Простота управления"],
-    solutions: ["Universal protocol bridge", "Security by design", "Intuitive interface"],
-    fullDescription: "Система для автоматизации и управления всеми устройствами умного дома через единый интерфейс.",
-    createdAt: "2026-01-15",
-    updatedAt: "2026-01-15"
-  },
-  {
-    _id: "43",
-    title: "Fashion AI Stylist",
-    description: "ИИ-стилист для подбора одежды",
-    category: "ai-integration",
-    tags: ["FASHION", "AI", "RECOMMENDATION", "MOBILE"],
-    image: "/images/content/test43.jpg",
-    slug: "fashion-ai-stylist",
-    client: "StyleAI Tech",
-    duration: "5 месяцев",
-    technologies: ["Python", "React Native", "Computer Vision", "ML", "Docker"],
-    results: ["Увеличение продаж на 45%", "Персонализация для 1M+ пользователей", "Снижение возвратов на 60%"],
-    challenges: ["Анализ стиля", "Рекомендации по сочетаниям", "Интеграция с магазинами"],
-    solutions: ["Style analysis models", "Compatibility algorithms", "E-commerce API"],
-    fullDescription: "Приложение с ИИ для анализа стиля и подбора персонализированных образов одежды.",
-    createdAt: "2026-02-01",
-    updatedAt: "2026-02-01"
-  },
-  {
-    _id: "44",
-    title: "Maritime Logistics Platform",
-    description: "Платформа для оптимизации морских перевозок",
-    category: "logistics",
-    tags: ["LOGISTICS", "MARITIME", "OPTIMIZATION", "AI"],
-    image: "/images/content/test44.jpg",
-    slug: "maritime-logistics-platform",
-    client: "OceanFreight Global",
-    duration: "8 месяцев",
-    technologies: ["Python", "React", "PostgreSQL", "ML", "Docker"],
-    results: ["Сокращение времени в пути на 20%", "Экономия топлива на 15%", "Оптимизация 1000+ маршрутов"],
-    challenges: ["Прогнозирование погоды", "Планирование портов", "Таможенные процессы"],
-    solutions: ["Weather prediction models", "Port optimization", "Customs automation"],
-    fullDescription: "Система для оптимизации морских грузоперевозок с использованием ИИ и анализа данных.",
-    createdAt: "2026-02-15",
-    updatedAt: "2026-02-15"
-  },
-  {
-    _id: "45",
-    title: "Music Creation AI",
-    description: "ИИ-инструмент для создания музыки",
-    category: "ai-integration",
-    tags: ["MUSIC", "AI", "CREATIVE", "AUDIO"],
-    image: "/images/content/test45.jpg",
-    slug: "music-creation-ai",
-    client: "SoundAI Studio",
-    duration: "7 месяцев",
-    technologies: ["Python", "React", "TensorFlow", "Audio Processing", "Docker"],
-    results: ["Создание 10,000+ треков", "Автоматизация 70% процессов", "Интеграция с DAW"],
-    challenges: ["Качество генерации", "Стилистическое разнообразие", "Интеграция с профессиональным софтом"],
-    solutions: ["High-quality audio models", "Style transfer", "VST plugin integration"],
-    fullDescription: "Инструмент с ИИ для автоматического создания и аранжировки музыкальных композиций.",
-    createdAt: "2026-03-01",
-    updatedAt: "2026-03-01"
-  },
-  {
-    _id: "46",
-    title: "Virtual Fitness Studio",
-    description: "Виртуальная студия фитнеса с ИИ-тренером",
-    category: "vr-ar",
-    tags: ["FITNESS", "VR", "AI", "IMMERSIVE"],
-    image: "/images/content/test46.jpg",
-    slug: "virtual-fitness-studio",
-    client: "FitVR Studios",
-    duration: "6 месяцев",
-    technologies: ["Unity", "C#", "React", "WebXR", "Docker"],
-    results: ["Увеличение вовлеченности на 300%", "Персонализация тренировок", "Глобальная доступность"],
-    challenges: ["Иммерсивный опыт", "Точное отслеживание движений", "Социальные взаимодействия"],
-    solutions: ["High-quality VR", "Motion tracking", "Social VR features"],
-    fullDescription: "VR-платформа для фитнеса с ИИ-тренером и возможностью групповых тренировок.",
-    createdAt: "2026-03-15",
-    updatedAt: "2026-03-15"
-  },
-  {
-    _id: "47",
-    title: "Smart Agriculture Drones",
-    description: "Система дронов для точного земледелия",
-    category: "iot",
-    tags: ["AGRICULTURE", "DRONES", "AI", "PRECISION"],
-    image: "/images/content/test47.jpg",
-    slug: "smart-agriculture-drones",
-    client: "AgroDrone Tech",
-    duration: "5 месяцев",
-    technologies: ["Python", "React", "Computer Vision", "DJI SDK", "Docker"],
-    results: ["Увеличение урожайности на 25%", "Снижение расхода удобрений на 30%", "Автоматизация мониторинга"],
-    challenges: ["Автономные полеты", "Анализ мультиспектральных данных", "Интеграция с сельхозтехникой"],
-    solutions: ["Autopilot system", "Multispectral analysis", "Farm equipment API"],
-    fullDescription: "Система автономных дронов для мониторинга и анализа сельскохозяйственных угодий.",
-    createdAt: "2026-04-01",
-    updatedAt: "2026-04-01"
-  },
-  {
-    _id: "48",
-    title: "AI Patent Analyzer",
-    description: "ИИ-система анализа патентов и исследований",
-    category: "ai-integration",
-    tags: ["AI", "PATENTS", "RESEARCH", "ANALYTICS"],
-    image: "/images/content/test48.jpg",
-    slug: "ai-patent-analyzer",
-    client: "PatentAI Research",
-    duration: "8 месяцев",
-    technologies: ["Python", "React", "NLP", "ML", "Elasticsearch"],
-    results: ["Сокращение времени анализа на 90%", "Выявление трендов", "Предсказание инноваций"],
-    challenges: ["Обработка миллионов документов", "Понимание технического языка", "Выявление связей"],
-    solutions: ["Distributed processing", "Technical NLP models", "Knowledge graph"],
-    fullDescription: "Система с ИИ для анализа патентов и научных исследований для выявления инновационных трендов.",
-    createdAt: "2026-04-15",
-    updatedAt: "2026-04-15"
-  },
-  {
-    _id: "49",
-    title: "Disaster Response System",
-    description: "Система для координации действий при ЧС",
-    category: "iot",
-    tags: ["DISASTER", "COORDINATION", "IOT", "REAL-TIME"],
-    image: "/images/content/test49.jpg",
-    slug: "disaster-response-system",
-    client: "EmergencyResponse Gov",
-    duration: "9 месяцев",
-    technologies: ["React", "Node.js", "IoT", "GIS", "Docker"],
-    results: ["Сокращение времени реагирования на 50%", "Координация 1000+ спасателей", "Спасение 10,000+ жизней"],
-    challenges: ["Связь в разрушенных зонах", "Real-time координация", "Интеграция с разными службами"],
-    solutions: ["Mesh сети", "Real-time dashboard", "Unified API"],
-    fullDescription: "Система для координации действий спасательных служб при чрезвычайных ситуациях.",
-    createdAt: "2026-05-01",
-    updatedAt: "2026-05-01"
-  },
-  {
-    _id: "50",
-    title: "Quantum Computing Platform",
-    description: "Платформа для квантовых вычислений и симуляций",
-    category: "quantum",
-    tags: ["QUANTUM", "COMPUTING", "SIMULATION", "RESEARCH"],
-    image: "/images/content/test50.jpg",
-    slug: "quantum-computing-platform",
-    client: "QuantumTech Research",
-    duration: "12 месяцев",
-    technologies: ["Python", "Qiskit", "React", "Docker", "Kubernetes"],
-    results: ["Ускорение вычислений в 1000 раз", "Симуляция сложных систем", "Прорыв в исследованиях"],
-    challenges: ["Сложность квантовых алгоритмов", "Интеграция с классическими системами", "Визуализация результатов"],
-    solutions: ["Quantum algorithm library", "Hybrid computing", "Advanced visualization"],
-    fullDescription: "Платформа для разработки и выполнения квантовых алгоритмов с интеграцией в классические вычислительные системы.",
-    createdAt: "2026-05-15",
-    updatedAt: "2026-05-15"
-  }
 ];
 
 // Типы для параметров запроса
 export interface GetProjectsParams {
-  category?: string;
+  serviceSlug?: string; // Фильтр по услуге (slug услуги)
   limit?: number;
   offset?: number;
-  tags?: string[];
+  search?: string; // Поиск по названию/описанию
 }
 
 export const projectsEndpoints = {
-  // Получение всех проектов с пагинацией и фильтрами
+  // Получение всех проектов с пагинацией и фильтрацией
   getAll: (params?: GetProjectsParams): Promise<{ data: Project[]; total: number }> => {
-    // Имитация задержки сети
     return new Promise(resolve => {
       setTimeout(() => {
         let filteredProjects = [...MOCK_PROJECTS];
         
-        // Фильтрация по категории
-        if (params?.category && params.category !== 'all') {
-          filteredProjects = filteredProjects.filter(p => p.category === params.category);
+        // Фильтрация по услуге
+        if (params?.serviceSlug && params.serviceSlug !== 'all') {
+          // Здесь будет логика фильтрации проектов по услуге
+          // Пока оставляем все проекты - логику добавим в сервисе
+          filteredProjects = filteredProjects.filter(project => {
+            // Временная заглушка - каждый 3й проект относится к услуге
+            // В реальности здесь будет связь проектов с услугами
+            const projectIndex = parseInt(project._id);
+            const serviceIndex = ['web-development', 'mobile-development', 'it-infrastructure', 
+                                  'ai-integration', 'data-analytics', 'cybersecurity', 
+                                  'cloud-services', 'support'].indexOf(params.serviceSlug!);
+            
+            if (serviceIndex >= 0) {
+              // Простая логика распределения проектов по услугам
+              return (projectIndex + serviceIndex) % 8 === 0;
+            }
+            return true;
+          });
         }
         
-        // Фильтрация по тегам
-        if (params?.tags?.length) {
-          filteredProjects = filteredProjects.filter(p => 
-            p.tags.some(tag => params.tags!.includes(tag))
+        // Поиск по названию/описанию
+        if (params?.search) {
+          const searchLower = params.search.toLowerCase();
+          filteredProjects = filteredProjects.filter(project => 
+            project.title.toLowerCase().includes(searchLower) ||
+            project.description.toLowerCase().includes(searchLower) ||
+            project.tags.some(tag => tag.toLowerCase().includes(searchLower))
           );
         }
         
@@ -944,7 +239,7 @@ export const projectsEndpoints = {
         const paginatedProjects = filteredProjects.slice(offset, offset + limit);
         
         resolve({ data: paginatedProjects, total });
-      }, 100);
+      }, 100); // Имитация задержки сети
     });
   },
   
@@ -962,19 +257,27 @@ export const projectsEndpoints = {
     });
   },
   
-  // Получение превью проектов (только основные поля)
-  getPreview: (params?: { limit?: number; category?: string }): Promise<ProjectPreview[]> => {
+  // Получение превью проектов (ограниченное количество)
+  getPreview: (params?: { serviceSlug?: string; limit?: number }): Promise<ProjectPreview[]> => {
     return new Promise(resolve => {
       setTimeout(() => {
         let filteredProjects = [...MOCK_PROJECTS];
         
-        if (params?.category && params.category !== 'all') {
-          filteredProjects = filteredProjects.filter(p => p.category === params.category);
+        if (params?.serviceSlug && params.serviceSlug !== 'all') {
+          // Фильтрация по услуге для превью
+          const projectIndex = Math.floor(Math.random() * MOCK_PROJECTS.length);
+          // Возвращаем случайные проекты для данной услуги
+          filteredProjects = filteredProjects.filter((_, index) => 
+            index % 8 === ['web-development', 'mobile-development', 'it-infrastructure', 
+                         'ai-integration', 'data-analytics', 'cybersecurity', 
+                         'cloud-services', 'support'].indexOf(params.serviceSlug!)
+          ).slice(0, params.limit || 6);
+        } else {
+          // Для "всех проектов" берем лимит
+          filteredProjects = filteredProjects.slice(0, params?.limit || 12);
         }
         
-        const limitedProjects = filteredProjects.slice(0, params?.limit || filteredProjects.length);
-        
-        const previews: ProjectPreview[] = limitedProjects.map(project => ({
+        const previews: ProjectPreview[] = filteredProjects.map(project => ({
           _id: project._id,
           title: project.title,
           description: project.description,
@@ -986,21 +289,6 @@ export const projectsEndpoints = {
         
         resolve(previews);
       }, 100);
-    });
-  },
-  
-  // Получение уникальных категорий (исправленная версия)
-  getCategories: (): Promise<Array<{ value: string; label: string }>> => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        // Используем Set для уникальности, но преобразуем по-другому
-        const categories = Array.from(new Set(MOCK_PROJECTS.map(p => p.category)));
-        const formatted = categories.map(cat => ({
-          value: cat,
-          label: cat.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-        }));
-        resolve(formatted);
-      }, 50);
     });
   }
 };
