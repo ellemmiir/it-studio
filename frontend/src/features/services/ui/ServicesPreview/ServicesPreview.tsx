@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getActiveServices } from "../../model/api";
+import { servicesService } from "../../model/services.service";
 import {
   formatPriceRange,
   isDumpActive,
@@ -8,7 +8,7 @@ import {
 import { Service } from "@/features/services/model/types";
 
 export default async function ServicesPreview() {
-  const activeServices = await getActiveServices();
+  const activeServices = await servicesService.getActive();
 
   if (activeServices.length === 0) {
     return <NoServices />;

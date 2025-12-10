@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, ArrowLeft } from "lucide-react";
 import { Service } from "@/features/services/model/types";
-import { getActiveServices } from "@/features/services/model/api";
+import { servicesService } from "@/features/services/model/services.service"; // Измененный импорт
 
 type SiteType =
   | "landing"
@@ -24,13 +24,6 @@ interface CalculatorState {
   functionality: Functionality | null;
   needsResponsive: Availability | null;
   urgency: Urgency | null;
-}
-
-interface SiteTypeConfig {
-  value: SiteType;
-  label: string;
-  desc: string;
-  slug: string;
 }
 
 const CalculatorInfrustructure = () => {
@@ -78,10 +71,12 @@ const CalculatorInfrustructure = () => {
   const loadServices = async () => {
     try {
       setIsLoading(true);
-      const activeServices = await getActiveServices();
+      // Используем новый сервис вместо старой функции
+      const activeServices = await servicesService.getActive();
       setServices(activeServices);
     } catch (error) {
       console.error("Ошибка при загрузке услуг:", error);
+      setServices([]); // Устанавливаем пустой массив в случае ошибки
     } finally {
       setIsLoading(false);
     }

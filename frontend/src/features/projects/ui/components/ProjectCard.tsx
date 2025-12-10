@@ -47,7 +47,6 @@ function ProjectImage({ image, title }: { image?: string; title: string }) {
   );
 }
 
-
 function ProjectTags({ tags }: { tags: string[] }) {
   return (
     <div className="mt-auto flex flex-wrap gap-2">

@@ -2,17 +2,18 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useServices, useDropdown } from "./Header.hooks";
+import { useDropdown } from "./Header.hooks";
 import { NAV_LINKS } from "./Header.constants";
 import { ServicesDropdown } from "./Header.components/ServicesDropdown";
 import { MobileServicesMenu } from "./Header.components/MobileServicesMenu";
 import { MobileMenuButton } from "./Header.components/MobileMenuButton";
 import { NavLink } from "./Header.components/NavLink";
 import type { NavLinkType } from "./Header.types";
+import { useActiveServices } from "@/features/services/model/hooks";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { services, isLoading, error } = useServices();
+  const { data: services, loading: isLoading, error } = useActiveServices();
   const dropdown = useDropdown();
 
   const closeMobileMenu = () => {
@@ -56,7 +57,7 @@ export default function Header() {
                   <ServicesDropdown
                     isOpen={dropdown.isOpen}
                     onClose={dropdown.closeDropdown}
-                    services={services}
+                    services={services || []}
                     isLoading={isLoading}
                     error={error}
                     dropdownRef={dropdown.dropdownRef}

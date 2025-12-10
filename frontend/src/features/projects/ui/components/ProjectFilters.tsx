@@ -1,49 +1,29 @@
 interface ProjectFiltersProps {
   activeFilter: string;
   onFilterChange: (filter: string) => void;
+  categories?: Array<{ value: string; label: string }>;
 }
 
 export const ProjectFilters = ({
   activeFilter,
   onFilterChange,
+  categories = [],
 }: ProjectFiltersProps) => {
-  const categories = [
-    "all",
-    "it-infrastructure",
-    "ip-telephony",
-    "audit",
-    "software-development",
-    "video-surveillance",
-    "devops",
-    "it-security-audit",
-    "ai-integration",
-  ];
-
-  const categoryLabels: { [key: string]: string } = {
-    all: "Все",
-    "it-infrastructure": "IT-инфраструктура",
-    "ip-telephony": "IP-телефония",
-    audit: "Аудит",
-    "software-development": "Разработка ПО",
-    "video-surveillance": "Видеонаблюдение",
-    devops: "DevOps",
-    "it-security-audit": "Аудит ИТ и ИБ",
-    "ai-integration": "Интеграция ИИ",
-  };
+  const allCategories = [{ value: "all", label: "Все проекты" }, ...categories];
 
   return (
-    <div className="border-grey-300 mb-13 flex flex-wrap justify-normal gap-4 border-b pb-7">
-      {categories.map((category) => (
+    <div className="flex flex-wrap gap-4">
+      {allCategories.map(({ value, label }) => (
         <button
-          key={category}
-          onClick={() => onFilterChange(category)}
-          className={`cursor-pointer rounded-md px-6 py-2 text-sm font-medium transition-all duration-300 ${
-            activeFilter === category
-              ? "bg-black text-white shadow-lg"
-              : "hover:bg-grey-300 bg-grey-200 text-grey-900"
+          key={value}
+          onClick={() => onFilterChange(value)}
+          className={`rounded-full px-6 py-2 transition-colors ${
+            activeFilter === value
+              ? "bg-purple-600 text-white"
+              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           }`}
         >
-          {categoryLabels[category]}
+          {label}
         </button>
       ))}
     </div>

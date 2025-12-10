@@ -3,7 +3,6 @@
 import { ReactNode } from "react";
 import { Service } from "../../model/types";
 import { formatPriceRange, isDumpActive } from "../../model/format";
-import { getActiveServices } from "@/features/services/model/api";
 
 interface BaseServiceTemplateProps {
   service: Service;
@@ -29,15 +28,10 @@ export const BaseServiceTemplate = ({
     <article className="mx-auto max-w-380 px-4">
       <div className="pt-40 pb-20">
         <h1 className="text-title mb-10 text-7xl font-semibold">
-          Заголовок нашей услуги
+          {service.title}
         </h1>
         <div className="max-w-4xl">
-          <p className="text-grey-800 text-lg">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
-            quos reprehenderit quibusdam. Cupiditate id culpa distinctio
-            aliquam. Quia placeat deleniti ad voluptates incidunt dignissimos
-            eos nesciunt, accusamus odio? Omnis, iure!
-          </p>
+          <p className="text-grey-800 text-lg">{service.description}</p>
         </div>
       </div>
 

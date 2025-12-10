@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useRef, ChangeEvent } from "react";
-import { useServices } from "@/components/layout/Header/Header.hooks";
+import { useActiveServices } from "@/features/services/model/hooks"; // Измененный импорт
 
 const ContactPage = () => {
-  const { services, isLoading: servicesLoading } = useServices();
+  // Используем хук из новой структуры
+  const { data: services, loading: servicesLoading } = useActiveServices();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
